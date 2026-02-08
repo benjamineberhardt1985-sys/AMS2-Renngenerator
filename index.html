@@ -44,7 +44,10 @@
             border-radius: 25px;
             overflow: hidden;
             z-index: 10;
-            margin-top: -20px; /* Schiebt den ganzen Block leicht hoch */
+            /* Hier schieben wir das gesamte Objekt hoch */
+    transform: translateY(-40px); 
+    /* Und sorgen dafür, dass unten Platz für das Lauflicht bleibt */
+    margin-bottom: 60px;
         }
 
         .container-box::before {
@@ -140,10 +143,11 @@
             padding: 16px; border-radius: 12px; font-family: 'Orbitron';
             font-weight: 900; cursor: pointer; width: 85%;
             transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 10px;
-            /* Höherer Abstand nach unten für Adressleisten-Problematik */
-            margin-bottom: 25px; 
-            position: relative;
+            margin-top: 15px;
+    margin-bottom: 10px; /* Hier deutlich reduzieren! */
+    position: relative;
+    z-index: 20;
+}
         }
         
         button:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
@@ -268,3 +272,4 @@
 
 </body>
 </html>
+

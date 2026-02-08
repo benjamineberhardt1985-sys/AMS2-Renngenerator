@@ -27,9 +27,11 @@
             background: #020205;
             color: var(--text);
             height: 100vh;
+            height: 100dvh; /* Nutzt die dynamische Höhe, die Adressleisten berücksichtigt */
             display: flex; 
-            justify-content: center;
-            align-items: center; /* Grund-Zentrierung */
+            flex-direction: column;
+            justify-content: center; /* Zentriert vertikal */
+            align-items: center;    /* Zentriert horizontal */
             overflow: hidden;
             position: relative;
         }
@@ -48,8 +50,9 @@
             z-index: 10;
             width: 380px;
             max-width: 92vw;
-            max-height: 85vh; 
-            margin: auto auto 15vh auto; /* Schiebt die Box aktiv nach oben */ 
+            max-height: 85vh;
+            /* Das hier zieht die Box im Standby hoch und hält sie bei Ergebnissen mittig: */
+            margin: auto; 
             display: flex;
             flex-direction: column;
         }
@@ -285,6 +288,7 @@
 
 </body>
 </html>
+
 
 
 

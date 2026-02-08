@@ -30,6 +30,7 @@
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
             position: relative;
+            padding-top: 40px;
         }
 
         body::before {
@@ -44,10 +45,8 @@
             border-radius: 25px;
             overflow: hidden;
             z-index: 10;
-            /* Hier schieben wir das gesamte Objekt hoch */
-    transform: translateY(-40px); 
-    /* Und sorgen dafür, dass unten Platz für das Lauflicht bleibt */
-    margin-bottom: 60px;
+            transform: none;
+            margin: 20px auto;
         }
 
         .container-box::before {
@@ -72,9 +71,11 @@
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem; letter-spacing: 3px; margin: 0 0 20px 0;
-            color: #fff; text-shadow: 0 0 15px var(--accent);
-            text-transform: uppercase;
+            font-size: 1.0rem; 
+            letter-spacing: 2px; 
+            margin: 5px 0 15px 0; /* Margin oben verringert */
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent);
         }
 
         .core-display {
@@ -272,4 +273,5 @@
 
 </body>
 </html>
+
 

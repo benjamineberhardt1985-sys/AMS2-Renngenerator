@@ -26,11 +26,10 @@
             font-family: 'Rajdhani', sans-serif;
             background: #020205;
             color: var(--text);
-            min-height: 100vh;
+            height: 100vh; /* Fest auf die Displayhöhe */
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
             position: relative;
-            padding-top: 40px;
         }
 
         body::before {
@@ -45,8 +44,12 @@
             border-radius: 25px;
             overflow: hidden;
             z-index: 10;
-            transform: none;
-            margin: 20px auto;
+            width: 380px;
+            max-width: 92vw;
+            /* Automatische Skalierung, damit sie nie höher als das Display ist */
+            max-height: 90vh; 
+            display: flex;
+            flex-direction: column;
         }
 
         .container-box::before {
@@ -59,28 +62,30 @@
         @keyframes rotateFrame { to { transform: rotate(360deg); } }
 
         .container {
-            background: var(--glass);
+           background: var(--glass);
             border-radius: 22px;
-            padding: 30px 0 40px 0; /* Padding angepasst für Balance */
-            width: 380px;
-            max-width: 92vw;
+            padding: 15px 0; /* Weniger Platz verschwenden */
+            width: 100%;
             text-align: center;
             position: relative;
             z-index: 11;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Verteilt Logo, Core und Button optimal */
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.0rem; 
             letter-spacing: 2px; 
-            margin: 5px 0 15px 0; /* Margin oben verringert */
+            margin: 5px 0 10px 0; /* Margin oben verringert */
             color: #fff;
             text-shadow: 0 0 10px var(--accent);
         }
 
         .core-display {
-            width: 90px; height: 90px;
-            margin: 0 auto 15px;
+            width: 75px; height: 75px;
+            margin: 0 auto 10px;
             border-radius: 50%;
             border: 1px solid rgba(255, 68, 0, 0.2);
             display: flex; align-items: center; justify-content: center;
@@ -273,5 +278,6 @@
 
 </body>
 </html>
+
 
 

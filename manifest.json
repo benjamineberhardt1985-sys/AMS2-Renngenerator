@@ -1,0 +1,15 @@
+{
+  "short_name": "AMS2 Gen",
+  "name": "AMS2 Renngenerator",
+  "icons": [
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKDBUuN8+8GgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkZW504gAAAJ1JREFUeN7t27ENwCAQA0Bf9h+Z6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip+fIAtAAL77Y9mAAAAABJRU5ErkJggg==",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#020205",
+  "background_color": "#020205"
+}

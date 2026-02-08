@@ -28,11 +28,10 @@
             color: var(--text);
             height: 100vh;
             display: flex; 
-            align-items: flex-start; /* ÄNDERUNG: Richtet alles am oberen Rand aus */
+            align-items: center; /* Wieder zentriert für den Startbildschirm */
             justify-content: center;
             overflow: hidden;
             position: relative;
-            padding-top: 5vh; /* ÄNDERUNG: Schiebt den Container 5% vom oberen Rand weg */
         }
 
         body::before {
@@ -49,8 +48,8 @@
             z-index: 10;
             width: 380px;
             max-width: 92vw;
-            /* Automatische Skalierung, damit sie nie höher als das Display ist */
-            max-height: 90vh; 
+            max-height: 90vh;
+            margin-top: -10vh; /* Schiebt die Box leicht nach oben, damit sie mittig wirkt */
             display: flex;
             flex-direction: column;
         }
@@ -147,7 +146,7 @@
 
         /* OPTIMIERTER KNOPF */
         button {
-            background: linear-gradient(45deg, #111, #222);
+           background: linear-gradient(45deg, #111, #222);
             border: 1px solid var(--accent);
             color: var(--accent);
             padding: 16px;
@@ -155,8 +154,8 @@
             font-family: 'Orbitron';
             font-weight: 900;
             width: 85%;
-            display: block; /* SICHERHEIT: Macht den Button zum Block-Element */
-            margin: 15px auto 0 auto; /* Zentriert horizontal (auto) */
+            display: block; 
+            margin: 15px auto 5px auto; /* auto links/rechts zentriert den Button perfekt */
             text-transform: uppercase;
             letter-spacing: 2px;
             position: relative;
@@ -286,6 +285,7 @@
 
 </body>
 </html>
+
 
 
 

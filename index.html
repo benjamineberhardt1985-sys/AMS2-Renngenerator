@@ -199,18 +199,58 @@
 <script>
     const db = {
         classes: [
-            { id: 'GT3', name: 'GT3 EVO', lapTime: 130, tracks: ['Spa 2022', 'Nordschleife 24h', 'Monza', 'Kyalami', 'Mount Panorama'] },
-            { id: 'HYPER', name: 'LMDh / Hypercars', lapTime: 112, tracks: ['Le Mans 2023', 'Daytona', 'Sebring', 'Interlagos', 'Imola'] },
-            { id: 'F1', name: 'Formula HiTech Gen2', lapTime: 88, tracks: ['Barcelona', 'Spielberg', 'Suzuka', 'Monaco GP', 'Hockenheim'] }
+            { id: 'GT3', name: 'GT3 (Gen 1 & 2)', lapTime: 130, tracks: ['Spa 2022', 'Nordschleife 24h', 'Monza', 'Kyalami', 'Mount Panorama', 'Silverstone', 'Hockenheim'] },
+            { id: 'GT4', name: 'GT4 Class', lapTime: 145, tracks: ['Brands Hatch', 'Donington', 'Oulton Park', 'Snetterton', 'Nürburgring GP'] },
+            { id: 'HYPER', name: 'Hypercars (LMDh)', lapTime: 112, tracks: ['Le Mans 2023', 'Daytona', 'Sebring', 'Watkins Glen', 'Interlagos', 'Imola'] },
+            { id: 'GTE', name: 'GTE Class', lapTime: 125, tracks: ['Le Mans', 'Silverstone', 'Daytona', 'Road America'] },
+            { id: 'GT5', name: 'GT5 Class', lapTime: 160, tracks: ['Guaporé', 'Ibarra', 'Cascavel', 'Tarumã', 'Londrina'] },
+            { id: 'P1', name: 'Prototype P1 (Gen 1 & 2)', lapTime: 105, tracks: ['Interlagos', 'Curitiba', 'Goiânia', 'Spa 2022'] },
+            { id: 'P2', name: 'Prototype P2', lapTime: 115, tracks: ['Daytona', 'Sebring', 'Watkins Glen', 'Interlagos'] },
+            { id: 'P3', name: 'Prototype P3', lapTime: 122, tracks: ['Londrina', 'Tarumã', 'Cascavel', 'Cordoba'] },
+            { id: 'P4', name: 'Prototype P4', lapTime: 135, tracks: ['Interlagos', 'Goiânia', 'Curitiba'] },
+            { id: 'STK_BRA', name: 'Stock Car Brasil (1979-2024)', lapTime: 135, tracks: ['Interlagos', 'Goiânia', 'Cascavel', 'Tarumã', 'Velo Città'] },
+            { id: 'F_ULTI', name: 'Formula Ultimate (Gen 1 & 2)', lapTime: 82, tracks: ['Barcelona', 'Spielberg', 'Suzuka', 'Monaco GP', 'Silverstone'] },
+            { id: 'F_RE_G3', name: 'Formula Retro (Gen 1-3)', lapTime: 105, tracks: ['Monaco 1970', 'Spa 1970', 'Kyalami 1976', 'Interlagos 1976'] },
+            { id: 'F_CLASSIC', name: 'Formula Classic (Gen 1-4)', lapTime: 95, tracks: ['Jerez 1988', 'Estoril 1988', 'Adelaide 1988', 'Monza 1991'] },
+            { id: 'F_V10', name: 'Formula V10 (Gen 1 & 2)', lapTime: 90, tracks: ['Barcelona 2003', 'Suzuka', 'Montreal', 'Monaco GP'] },
+            { id: 'F_HI', name: 'Formula HiTech (Gen 1 & 2)', lapTime: 88, tracks: ['Silverstone 1991', 'Hockenheim 1988', 'Spa 1993', 'Adelaide'] },
+            { id: 'F_USA', name: 'Formula USA (Gen 1-4 / 2023)', lapTime: 92, tracks: ['Indianapolis', 'Fontana', 'Long Beach', 'Cleveland', 'Laguna Seca'] },
+            { id: 'GROUP_C', name: 'Group C', lapTime: 110, tracks: ['Le Mans', 'Daytona', 'Monza 1991', 'Spa 1993'] },
+            { id: 'DTM_HIST', name: 'Group A / DTM Classics', lapTime: 148, tracks: ['Hockenheim 1988', 'Nürburgring GP', 'Donington', 'Zolder'] },
+            { id: 'GT1', name: 'GT1 Class', lapTime: 118, tracks: ['Spa 1993', 'Monza 1991', 'Barcelona 2003', 'Silverstone'] },
+            { id: 'VINTAGE', name: 'Vintage Touring Cars', lapTime: 175, tracks: ['Oulton Park', 'Brands Hatch', 'Cadwell Park', 'Kyalami 1976'] },
+            { id: 'SUPER_V8', name: 'Super V8', lapTime: 128, tracks: ['Mount Panorama', 'Adelaide', 'Kyalami', 'Townsville'] },
+            { id: 'COP_TRUCK', name: 'Copa Truck', lapTime: 195, tracks: ['Interlagos', 'Goiânia', 'Cascavel', 'Tarumã'] },
+            { id: 'RX', name: 'Rallycross (RX)', lapTime: 45, tracks: ['Barcelona RX', 'Hockenheim RX', 'Spa RX', 'Nürburgring RX', 'Tyrolean Dirt'] }
         ],
         cars: {
-            'GT3': ['Mercedes AMG GT3 EVO', 'McLaren 720S GT3', 'BMW M4 GT3', 'Porsche 911 GT3 R'],
+            'GT3': ['BMW M4 GT3', 'Mercedes-AMG GT3 Evo', 'Porsche 911 GT3 R (992)', 'McLaren 720S GT3', 'Nissan GT-R Nismo GT3', 'Audi R8 LMS GT3'],
+            'GT4': ['BMW M4 GT4', 'Mercedes-AMG GT4', 'Porsche Cayman GT4 Clubsport', 'McLaren 570S GT4', 'Ginetta G55 GT4'],
             'HYPER': ['BMW M Hybrid V8', 'Porsche 963', 'Cadillac V-Series.R', 'Lamborghini SC63'],
-            'F1': ['McLaren MP4/8', 'Formula HiTech Gen2', 'Williams FW14B']
+            'GTE': ['Porsche 911 RSR-19', 'BMW M8 GTE', 'Corvette C8.R GTE'],
+            'GT5': ['Ginetta G40 Cup', 'Puma G15', 'Puma GTE'],
+            'P1': ['Metalmoro AJR (V6, V8, Honda)', 'Sigma P1 G2', 'Ginetta G58'],
+            'P2': ['Metalmoro MR18', 'Sigma P1', 'MCR S1 - P2'],
+            'P3': ['Metalmoro MR18', 'Roco 001', 'MRX (div. Engines)'],
+            'P4': ['Metalmoro MR18', 'MCR S1 - P4'],
+            'STK_BRA': ['Chevrolet Cruze (2020-24)', 'Toyota Corolla (2020-24)', 'Chevrolet Omega Stock Car 1999', 'Opalas Stock Car 1979/1986'],
+            'F_ULTI': ['Formula Ultimate Gen2', 'Formula Ultimate Gen1'],
+            'F_RE_G3': ['Lotus 78', 'Lotus 79', 'Brabham BT46B'],
+            'F_CLASSIC': ['Lotus 98T', 'Williams FW11B', 'McLaren MP4/4', 'McLaren MP4/5B', 'McLaren MP4/6'],
+            'F_V10': ['Formula V10 Gen 1', 'Formula V10 Gen 2'],
+            'F_HI': ['McLaren MP4/8', 'Williams FW14B', 'Formula HiTech Gen 1/2'],
+            'F_USA': ['Reynard 95i', 'Reynard 98i', 'Lola T95/00', 'Swift 009.c', 'Formula USA 2023'],
+            'GROUP_C': ['Sauber C9', 'Porsche 962C', 'Nissan R89C', 'Corvette GTP'],
+            'DTM_HIST': ['BMW M3 Sport Evo', 'Mercedes-Benz 190E EVO 2', 'Nissan Skyline GT-R R32'],
+            'GT1': ['McLaren F1 GTR', 'Porsche 911 GT1', 'Mercedes-Benz CLK GTR'],
+            'VINTAGE': ['Lotus 23', 'Mini Cooper S', 'Corvette C3', 'BMW 2002 Turbo'],
+            'SUPER_V8': ['Super V8 (Holden/Ford Style)'],
+            'COP_TRUCK': ['Mercedes-Benz Actros', 'VW Constellation', 'MAN TGX', 'IVECO Stralis'],
+            'RX': ['VW Polo RX', 'Peugeot 208 RX', 'Mini Countryman RX', 'Mitsubishi Lancer RX']
         },
         seasons: ['Frühling', 'Sommer', 'Herbst', 'Winter'],
-        weather: ['Klar', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'],
-        times: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
+        weather: ['Klar', 'Heiter', 'Wolkig', 'Bewölkt', 'Bedeckt', 'Sturm', 'Leichter Regen', 'Regen', 'Nebel mit Regen', 'Starker Nebel', 'Starknebel mit Regen', 'Diesig', 'Gewitter', 'Nebel'],
+        times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
 
     const genBtn = document.getElementById('genBtn');
@@ -288,6 +328,7 @@
 
 </body>
 </html>
+
 
 
 

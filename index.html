@@ -26,10 +26,13 @@
             font-family: 'Rajdhani', sans-serif;
             background: #020205;
             color: var(--text);
-            height: 100vh; /* Fest auf die Displayhöhe */
-            display: flex; align-items: center; justify-content: center;
+            height: 100vh;
+            display: flex; 
+            align-items: flex-start; /* ÄNDERUNG: Richtet alles am oberen Rand aus */
+            justify-content: center;
             overflow: hidden;
             position: relative;
+            padding-top: 5vh; /* ÄNDERUNG: Schiebt den Container 5% vom oberen Rand weg */
         }
 
         body::before {
@@ -145,14 +148,19 @@
         /* OPTIMIERTER KNOPF */
         button {
             background: linear-gradient(45deg, #111, #222);
-            border: 1px solid var(--accent); color: var(--accent);
-            padding: 16px; border-radius: 12px; font-family: 'Orbitron';
-            font-weight: 900; cursor: pointer; width: 85%;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 15px;
-    margin-bottom: 10px; /* Hier deutlich reduzieren! */
-    position: relative;
-    z-index: 20;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'Orbitron';
+            font-weight: 900;
+            width: 85%;
+            display: block; /* SICHERHEIT: Macht den Button zum Block-Element */
+            margin: 15px auto 0 auto; /* Zentriert horizontal (auto) */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 20;
 }
         }
         
@@ -278,6 +286,7 @@
 
 </body>
 </html>
+
 
 
 

@@ -1,15 +1,16 @@
 {
   "short_name": "AMS2 Gen",
   "name": "AMS2 Renngenerator",
+  "display": "standalone",
+  "start_url": "index.html",
+  "background_color": "#020205",
+  "theme_color": "#ff4400",
   "icons": [
     {
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKDBUuN8+8GgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkZW504gAAAJ1JREFUeN7t27ENwCAQA0Bf9h+Z6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip+fIAtAAL77Y9mAAAAABJRU5ErkJggg==",
-      "sizes": "64x64",
-      "type": "image/png"
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKDBUuN8+8GgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkZW504gAAAKlJREFUeN7t18EJwDAMAME07D9y6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip6Sip+fIAteAL935X3YAAAAAElFTkSuQmCC",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#020205",
-  "background_color": "#020205"
+  ]
 }

@@ -28,8 +28,8 @@
             color: var(--text);
             height: 100vh;
             display: flex; 
-            align-items: center; /* Wieder zentriert für den Startbildschirm */
             justify-content: center;
+            align-items: center; /* Grund-Zentrierung */
             overflow: hidden;
             position: relative;
         }
@@ -48,8 +48,8 @@
             z-index: 10;
             width: 380px;
             max-width: 92vw;
-            max-height: 90vh;
-            margin-top: -10vh; /* Schiebt die Box leicht nach oben, damit sie mittig wirkt */
+            max-height: 85vh; /* Verhindert das Anstoßen oben/unten */
+            margin: auto; /* Zieht alles perfekt in die Mitte */
             display: flex;
             flex-direction: column;
         }
@@ -155,7 +155,7 @@
             font-weight: 900;
             width: 85%;
             display: block; 
-            margin: 15px auto 5px auto; /* auto links/rechts zentriert den Button perfekt */
+            margin: 15px auto 10px auto; /* Zentriert horizontal durch auto */
             text-transform: uppercase;
             letter-spacing: 2px;
             position: relative;
@@ -285,6 +285,7 @@
 
 </body>
 </html>
+
 
 
 

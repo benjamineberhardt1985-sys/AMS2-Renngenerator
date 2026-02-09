@@ -264,33 +264,34 @@
 
         let html = "";
         for(let i=0; i<3; i++) {
-            const cls = db.classes[Math.floor(Math.random() * db.classes.length)];
-            const carList = db.cars[cls.id] || [{name: "Unbekannt", year: 2024}];
-            const car = carList[Math.floor(Math.random() * carList.length)];
+            // Zufälliges Auto wählen
+            const car = db.cars[Math.floor(Math.random() * db.cars.length)];
             
-            // Intelligenter Filter-Mechanismus
-            let possibleTracks = [];
-            if (cls.id === "RX" || cls.id === "FDIRT" || cls.id === "KARTCROSS") {
-                possibleTracks = db.tracks.filter(t => t.grade === "Off-road");
-            } else if (cls.id.includes("KARTING") || cls.id.includes("KART")) {
-                possibleTracks = db.tracks.filter(t => t.grade === "Kart");
-            } else if (car.year < 1995) {
-                possibleTracks = db.tracks.filter(t => t.grade.includes("Historic"));
+            // Intelligenter Strecken-Filter basierend auf Klasse (car.c) und Jahr (car.y)
+            let pool = db.tracks;
+            if(car.c.includes("Rallycross") || car.c.includes("Dirt") || car.c.includes("RX")) {
+                pool = db.tracks.filter(t => t.g === "Off-road");
+            } else if(car.c.includes("Kart")) {
+                pool = db.tracks.filter(t => t.g === "Kart");
+            } else if(car.y < 1995) {
+                pool = db.tracks.filter(t => t.g.includes("Historic"));
             } else {
-                possibleTracks = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.grade));
+                pool = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.g));
             }
 
-            if (possibleTracks.length === 0) possibleTracks = db.tracks;
-            const track = possibleTracks[Math.floor(Math.random() * possibleTracks.length)];
-            
+            // Fallback falls Pool leer
+            if(pool.length === 0) pool = db.tracks;
+            const track = pool[Math.floor(Math.random() * pool.length)];
+
+            // WICHTIG: Hier nutzen wir jetzt die Abkürzungen car.n, car.c, track.l, track.t, track.la
             html += `
                 <div class="race-card">
                     <div class="result-content">
-                        <div class="res-item"><strong>Klasse</strong><span>${cls.name}</span></div>
-                        <div class="res-item"><strong>Fahrzeug</strong><span>${car.name}</span></div>
-                        <div class="res-item"><strong>Land</strong><span>${track.land}</span></div>
-                        <div class="res-item"><strong>Strecke</strong><span>${track.track}</span></div>
-                        <div class="res-item"><strong>Layout</strong><span>${track.layout}</span></div>
+                        <div class="res-item"><strong>Klasse</strong><span>${car.c}</span></div>
+                        <div class="res-item"><strong>Fahrzeug</strong><span>${car.n}</span></div>
+                        <div class="res-item"><strong>Land</strong><span>${track.l}</span></div>
+                        <div class="res-item"><strong>Strecke</strong><span>${track.t}</span></div>
+                        <div class="res-item"><strong>Layout</strong><span>${track.la}</span></div>
                         <div class="res-item"><strong>Jahreszeit</strong><span>${db.seasons[Math.floor(Math.random()*db.seasons.length)]}</span></div>
                         <div class="res-item"><strong>Wetter</strong><span>${db.weather[Math.floor(Math.random()*db.weather.length)]}</span></div>
                         <div class="res-item"><strong>Startzeit</strong><span>${db.times[Math.floor(Math.random()*db.times.length)]}</span></div>
@@ -324,4 +325,5 @@
 </script>
 </body>
 </html>
+
 

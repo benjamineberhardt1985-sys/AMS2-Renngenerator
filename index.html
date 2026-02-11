@@ -3,35 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <title>AMS2 Renngenerator - Full Version</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #ff4400; --text: #e8e8e8; --glass: rgba(6, 6, 12, 0.98); }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; background: #020205; color: var(--text); height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; position: relative; }
-        .container-box { position: relative; padding: 3px; border-radius: 25px; overflow: hidden; width: 380px; max-width: 92vw; display: flex; flex-direction: column; }
-        .container-box::before { content: ''; position: absolute; width: 150%; height: 150%; background: conic-gradient(transparent, var(--accent), transparent 30%); top: -25%; left: -25%; animation: rotateFrame 4s linear infinite; }
+        
+        body { 
+            margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; 
+            background: #020205; color: var(--text); 
+            min-height: 100dvh; /* Nutzt mindestens die volle Höhe */
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; 
+            overflow-x: hidden; position: relative; 
+        }
+
+        .container-box { 
+            position: relative; padding: 3px; border-radius: 25px; 
+            overflow: hidden; width: 92vw; max-width: 380px; 
+            display: flex; flex-direction: column; 
+            margin: 20px auto; /* Zentriert die Box horizontal */
+        }
+
+        .container-box::before { 
+            content: ''; position: absolute; width: 150%; height: 150%; 
+            background: conic-gradient(transparent, var(--accent), transparent 30%); 
+            top: -25%; left: -25%; animation: rotateFrame 4s linear infinite; 
+        }
+
         @keyframes rotateFrame { to { transform: rotate(360deg); } }
-        .container { background: var(--glass); border-radius: 22px; padding: 15px 0; width: 100%; text-align: center; position: relative; z-index: 11; }
+
+        .container { 
+            background: var(--glass); border-radius: 22px; 
+            padding: 20px 0; width: 100%; text-align: center; 
+            position: relative; z-index: 11; 
+            display: flex; flex-direction: column;
+        }
+
         h1 { font-family: 'Orbitron', sans-serif; font-size: 1.0rem; margin: 5px 0 10px 0; text-shadow: 0 0 10px var(--accent); }
-        .core-display { width: 75px; height: 75px; margin: 0 auto 10px; border-radius: 50%; border: 1px solid rgba(255, 68, 0, 0.2); display: flex; align-items: center; justify-content: center; position: relative; background: rgba(0,0,0,0.5); }
-        #suggestion-num { font-family: 'Orbitron'; font-size: 3rem; font-weight: 900; color: var(--accent); display: none; }
-        .standby-pulse { width: 35px; height: 35px; background: var(--accent); border-radius: 50%; animation: pulse 2.5s infinite; box-shadow: 0 0 30px var(--accent); }
-        @keyframes pulse { 0%, 100% { transform: scale(0.85); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 0.3; } }
-        .loader-ring { position: absolute; width: 100%; height: 100%; border: 3px solid transparent; border-top-color: var(--accent); border-radius: 50%; display: none; animation: rotate 1.2s linear infinite; }
+
+        .core-display { 
+            width: 75px; height: 75px; margin: 0 auto 10px; 
+            border-radius: 50%; border: 1px solid rgba(255, 68, 0, 0.2); 
+            display: flex; align-items: center; justify-content: center; 
+            position: relative; background: rgba(0,0,0,0.5); 
+        }
+
+        #suggestion-num { 
+            font-family: 'Orbitron'; font-size: 3rem; font-weight: 900; 
+            color: var(--accent); text-shadow: 0 0 20px var(--accent); 
+            display: none; 
+        }
+
+        .standby-pulse { 
+            width: 30px; height: 30px; background: var(--accent); 
+            border-radius: 50%; animation: pulse 2.5s infinite; 
+            box-shadow: 0 0 30px var(--accent); 
+        }
+
+        @keyframes pulse { 
+            0%, 100% { transform: scale(0.85); opacity: 0.6; } 
+            50% { transform: scale(1.1); opacity: 0.3; } 
+        }
+
+        .loader-ring { 
+            position: absolute; width: 100%; height: 100%; 
+            border: 3px solid transparent; border-top-color: var(--accent); 
+            border-radius: 50%; display: none; animation: rotate 1.2s linear infinite; 
+        }
+
         @keyframes rotate { to { transform: rotate(360deg); } }
-        .slider-wrapper { display: none; overflow: hidden; width: 100%; margin-bottom: 15px; }
-        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-        .race-card { min-width: 100%; padding: 0 25px; scroll-snap-align: center; }
-        .result-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 68, 0, 0.2); border-radius: 15px; padding: 15px; text-align: left; }
-        .res-item { margin-bottom: 8px; border-left: 2px solid var(--accent); padding-left: 10px; }
-        .res-item strong { display: block; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; }
-        .res-item span { font-size: 0.95rem; font-weight: 700; color: #fff; }
-        .dots { display: none; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
-        .dot.active { background: var(--accent); transform: scale(1.3); }
-        button { background: #111; border: 1px solid var(--accent); color: var(--accent); padding: 16px; border-radius: 12px; font-family: 'Orbitron'; width: 85%; margin: 15px auto 10px; cursor: pointer; }
-        .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin-bottom: 10px; }
+
+        .slider-wrapper { display: none; overflow: hidden; width: 100%; margin-bottom: 10px; }
+
+        .race-cards-container { 
+            display: flex; overflow-x: auto; 
+            scroll-snap-type: x mandatory; scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .race-cards-container::-webkit-scrollbar { display: none; }
+
+        .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; }
+
+        .result-content { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(255, 68, 0, 0.2); 
+            border-radius: 15px; padding: 15px; text-align: left; 
+        }
+
+        .res-item { 
+            margin-bottom: 8px; border-left: 2px solid var(--accent); 
+            padding-left: 10px; display: block; 
+        }
+
+        .res-item strong { 
+            display: block; font-size: 0.65rem; 
+            color: var(--accent); text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        .res-item span { 
+            font-size: 1.05rem; font-weight: 700; 
+            color: #fff; display: block; line-height: 1.2;
+        }
+
+        .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.3s ease; }
+        .dot.active { background: var(--accent); transform: scale(1.2); box-shadow: 0 0 10px var(--accent); }
+
+        button { 
+            background: #111; border: 1px solid var(--accent); 
+            color: var(--accent); padding: 16px; border-radius: 12px; 
+            font-family: 'Orbitron'; font-weight: 900; 
+            width: 85%; margin: 10px auto; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        button:active { transform: scale(0.98); background: #1a1a1a; }
+
+        .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -102,8 +192,28 @@
         times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
     
+    // Variablen-Referenzen
+    const genBtn = document.getElementById('genBtn');
+    const loader = document.getElementById('loader');
+    const status = document.getElementById('status');
+    const sNum = document.getElementById('suggestion-num');
+    const pulse = document.getElementById('pulse');
+    const slider = document.getElementById('slider');
+    const wrapper = document.getElementById('wrapper');
+    const dotsDiv = document.getElementById('dots');
+    const dots = document.querySelectorAll('.dot');
+
+    // Slider-Logik: Aktualisiert die Nummer und die Punkte beim Wischen
+    slider.addEventListener('scroll', () => {
+        const index = Math.round(slider.scrollLeft / slider.offsetWidth);
+        sNum.textContent = index + 1;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    });
+
     async function generateRaces() {
-    genBtn.disabled = true;
+        genBtn.disabled = true;
         wrapper.style.display = "none";
         dotsDiv.style.display = "none";
         sNum.style.display = "none";
@@ -111,14 +221,14 @@
         loader.style.display = "block";
         status.textContent = "SYSTEM SCANNING...";
 
+        // Simulation der Berechnung
         await new Promise(r => setTimeout(r, 1800));
 
         let html = "";
         for(let i=0; i<3; i++) {
-            // Zufälliges Auto wählen
             const car = db.cars[Math.floor(Math.random() * db.cars.length)];
             
-            // Intelligenter Strecken-Filter basierend auf Klasse (car.c) und Jahr (car.y)
+            // Strecken-Filter
             let pool = db.tracks;
             if(car.c.includes("Rallycross") || car.c.includes("Dirt") || car.c.includes("RX")) {
                 pool = db.tracks.filter(t => t.g === "Off-road");
@@ -130,11 +240,9 @@
                 pool = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.g));
             }
 
-            // Fallback falls Pool leer
             if(pool.length === 0) pool = db.tracks;
             const track = pool[Math.floor(Math.random() * pool.length)];
 
-            // WICHTIG: Hier nutzen wir jetzt die Abkürzungen car.n, car.c, track.l, track.t, track.la
             html += `
                 <div class="race-card">
                     <div class="result-content">
@@ -151,20 +259,26 @@
         }
 
         slider.innerHTML = html;
+        slider.scrollLeft = 0; // Zurück zum ersten Vorschlag springen
         wrapper.style.display = "block";
         dotsDiv.style.display = "flex";
         loader.style.display = "none";
         sNum.style.display = "block";
         sNum.textContent = "1";
+        
+        // Punkte zurücksetzen
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
+
         status.textContent = "SZENARIEN GELADEN";
         genBtn.disabled = false;
         genBtn.textContent = "Neu berechnen";
-}
+    }
 
-document.getElementById('genBtn').addEventListener('click', generateRaces);
+    genBtn.addEventListener('click', generateRaces);
 </script>
 </body>
 </html>
+
 
 
 

@@ -14,30 +14,25 @@
     <style>
     :root {
         --accent: #ff4400;
-        --accent-glow: #ff6600;
-        --text: #e8e8e8;
         --glass: rgba(6, 6, 12, 0.98);
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * { 
+        box-sizing: border-box; 
+        -webkit-tap-highlight-color: transparent; 
+    }
     
     body {
-        margin: 0; padding: 25px; /* Knautschzone für den Leuchtrand */
         margin: 0; 
-        padding: 0; /* Wir regeln den Abstand über die Box selbst */
+        padding: 0; 
         font-family: 'Rajdhani', sans-serif;
         background: #020205;
         height: 100dvh;
+        width: 100vw;
         display: flex; 
-        justify-content: center; /* Horizontale Zentrierung */
-        align-items: center;     /* Vertikale Zentrierung */
+        justify-content: center; 
+        align-items: center; 
         overflow: hidden;
-    }
-
-    body::before {
-        content: ''; position: absolute; width: 100%; height: 100%;
-        background: radial-gradient(circle at 50% 50%, #150820 0%, #020205 100%);
-        z-index: -1;
     }
 
     .container-box {
@@ -45,21 +40,17 @@
         padding: 3px;
         border-radius: 25px;
         overflow: hidden;
-        /* WICHTIG: Keine feste Breite von 380px mehr, sondern max-width */
-        width: 92vw; 
-        max-width: 400px; 
-        max-height: 85dvh; 
+        width: 90vw; /* 5% Puffer links und rechts für den Rand */
+        max-width: 380px; 
+        max-height: 82dvh; /* Schutzpuffer für den unteren Rand */
         display: flex;
         flex-direction: column;
-        /* Zentrierung erzwingen */
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .container-box::before {
-        content: ''; position: absolute; width: 150%; height: 150%;
+        content: ''; position: absolute; width: 200%; height: 200%;
         background: conic-gradient(transparent, var(--accent), transparent 30%);
-        top: -25%; left: -25%;
+        top: -50%; left: -50%;
         animation: rotateFrame 4s linear infinite;
     }
 
@@ -68,106 +59,87 @@
     .container {
         background: var(--glass);
         border-radius: 22px;
-        padding: 20px 0;
+        padding: 15px 0;
         width: 100%;
+        height: 100%;
         text-align: center;
         position: relative;
         z-index: 11;
-        /* Sicherstellen, dass nichts übersteht */
         display: flex;
         flex-direction: column;
+        justify-content: space-between; /* Verteilt Title, Kreis, Karte und Button optimal */
     }
 
     h1 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1.1rem; 
-        letter-spacing: 2px; 
-        margin: 0 0 15px 0;
-        color: #fff;
+        font-size: 1rem;
+        margin: 5px 0;
         text-shadow: 0 0 10px var(--accent);
     }
 
     .core-display {
-        width: 85px; height: 85px; /* Wieder größer */
-        margin: 0 auto 15px;
+        width: 70px; height: 70px;
+        margin: 0 auto;
         border-radius: 50%;
         border: 1px solid rgba(255, 68, 0, 0.2);
         display: flex; align-items: center; justify-content: center;
         position: relative;
         background: rgba(0,0,0,0.5);
-        box-shadow: inset 0 0 25px rgba(255, 68, 0, 0.15);
     }
 
     #suggestion-num {
-        font-family: 'Orbitron'; font-size: 3.5rem; font-weight: 900;
-        color: var(--accent); text-shadow: 0 0 25px var(--accent);
-        display: none;
-    }
-
-    .standby-pulse {
-        width: 40px; height: 40px;
-        background: var(--accent); border-radius: 50%;
-        animation: pulse 2.5s infinite ease-in-out;
-        box-shadow: 0 0 35px var(--accent);
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(0.85); opacity: 0.6; }
-        50% { transform: scale(1.1); opacity: 0.3; }
+        font-family: 'Orbitron'; font-size: 2.5rem; font-weight: 900;
+        color: var(--accent); text-shadow: 0 0 15px var(--accent);
     }
 
     .loader-ring {
         position: absolute; width: 100%; height: 100%;
-        border: 4px solid transparent; border-top-color: var(--accent);
+        border: 3px solid transparent; border-top-color: var(--accent);
         border-radius: 50%; display: none;
-        animation: rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        animation: rotate 1.2s linear infinite;
     }
-
     @keyframes rotate { to { transform: rotate(360deg); } }
 
-    .slider-wrapper { display: none; overflow: hidden; width: 100%; margin-bottom: 20px; }
-    .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .slider-wrapper { overflow: hidden; width: 100%; flex-grow: 1; display: flex; align-items: center; }
+    .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; width: 100%; }
     .race-cards-container::-webkit-scrollbar { display: none; }
-    
-    .race-card { min-width: 100%; padding: 0 25px; scroll-snap-align: center; }
+    .race-card { min-width: 100%; padding: 0 15px; scroll-snap-align: center; }
 
     .result-content {
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 68, 0, 0.2);
-        border-radius: 15px; padding: 20px; text-align: left; /* Mehr Padding */
-        position: relative; overflow: hidden;
+        border-radius: 12px; 
+        padding: 10px 15px;
+        text-align: left;
     }
 
-    .res-item { margin-bottom: 12px; border-left: 2px solid var(--accent); padding-left: 12px; }
-    .res-item strong { display: block; font-size: 0.65rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; }
-    .res-item span { font-size: 1.1rem; font-weight: 700; color: #fff; line-height: 1.2; }
+    .res-item { margin-bottom: 4px; border-left: 2px solid var(--accent); padding-left: 10px; }
+    .res-item strong { display: block; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; }
+    .res-item span { font-size: 0.9rem; font-weight: 700; color: #fff; }
 
-    .dots { display: none; justify-content: center; gap: 12px; margin-bottom: 15px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.4s; }
-    .dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1.3); }
+    .dots { display: flex; justify-content: center; gap: 8px; margin: 5px 0; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+    .dot.active { background: var(--accent); }
 
+    /* DEIN BUTTON - WIEDER INTEGRIERT UND OPTIMIERT */
     button {
         background: linear-gradient(45deg, #111, #222);
         border: 1px solid var(--accent);
         color: var(--accent);
-        padding: 18px;
+        padding: 14px;
         border-radius: 12px;
         font-family: 'Orbitron';
         font-weight: 900;
         width: 85%;
-        display: block; 
-        margin: 10px auto 5px auto;
+        margin: 5px auto 10px auto;
         text-transform: uppercase;
         letter-spacing: 2px;
-        position: relative;
-        z-index: 20;
+        cursor: pointer;
     }
     
-    button:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
-    button:active { transform: scale(0.95); }
-    button:disabled { opacity: 0.4; filter: grayscale(1); }
+    button:active { transform: scale(0.98); }
 
-    .status { font-family: 'Orbitron'; font-size: 0.75rem; color: var(--accent); margin-bottom: 12px; letter-spacing: 1.5px; }
+    .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin: 5px 0; }
 </style>
 </head>
 <body>
@@ -329,6 +301,7 @@
 </script>
 </body>
 </html>
+
 
 
 

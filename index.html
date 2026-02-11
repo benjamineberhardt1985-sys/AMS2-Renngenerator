@@ -178,7 +178,7 @@
 </style>
 </head>
 <body>
-
+<div id="pwa-splash"><img src="icon-512.png"><div class="status">INITIALIZING...</div></div>
 <div class="container-box">
     <div class="container">
         <h1>AMS2 Renngenerator</h1>
@@ -333,9 +333,24 @@
                 .catch(err => console.log('SW Fehler:', err));
         });
     }
+
+    // 2. Splashscreen Timer (unabhängig vom Service Worker)
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const sp = document.getElementById('pwa-splash');
+            if(sp) {
+                sp.style.opacity = '0';
+                setTimeout(() => {
+                    sp.style.display = 'none';
+                }, 500);
+            }
+        }, 2500); // Zeigt dein 512px Icon für 2,5 Sekunden
+        });
+    }
 </script>
 </body>
 </html>
+
 
 
 

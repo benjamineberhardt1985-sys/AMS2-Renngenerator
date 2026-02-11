@@ -229,6 +229,7 @@
         times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
     
+    // UI Elemente referenzieren
     const genBtn = document.getElementById('genBtn');
     const status = document.getElementById('status');
     const loader = document.getElementById('loader');
@@ -239,6 +240,8 @@
     const dotsDiv = document.getElementById('dots');
 
     async function generateRaces() {
+        if (!db.cars || !db.tracks) return;
+
         genBtn.disabled = true;
         wrapper.style.display = "none";
         dotsDiv.style.display = "none";
@@ -247,14 +250,13 @@
         loader.style.display = "block";
         status.textContent = "SYSTEM SCANNING...";
 
+        // Kleiner Scan-Effekt
         await new Promise(r => setTimeout(r, 1800));
 
         let html = "";
         for(let i=0; i<3; i++) {
-            // Zufälliges Auto wählen
             const car = db.cars[Math.floor(Math.random() * db.cars.length)];
             
-            // Intelligenter Strecken-Filter basierend auf Klasse (car.c) und Jahr (car.y)
             let pool = db.tracks;
             if(car.c.includes("Rallycross") || car.c.includes("Dirt") || car.c.includes("RX")) {
                 pool = db.tracks.filter(t => t.g === "Off-road");
@@ -266,11 +268,9 @@
                 pool = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.g));
             }
 
-            // Fallback falls Pool leer
             if(pool.length === 0) pool = db.tracks;
             const track = pool[Math.floor(Math.random() * pool.length)];
 
-            // WICHTIG: Hier nutzen wir jetzt die Abkürzungen car.n, car.c, track.l, track.t, track.la
             html += `
                 <div class="race-card">
                     <div class="result-content">
@@ -297,6 +297,7 @@
         genBtn.textContent = "Neu berechnen";
     }
 
+    // Scroll-Logik für die Punkte (Dots)
     slider.addEventListener('scroll', () => {
         const index = Math.round(slider.scrollLeft / slider.offsetWidth);
         sNum.textContent = index + 1;
@@ -304,8 +305,10 @@
         dots.forEach((d, i) => d.classList.toggle('active', i === index));
     });
 
+    // Event Listener für den Button
     genBtn.addEventListener('click', generateRaces);
 
+    // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js')
@@ -313,7 +316,6 @@
                 .catch(err => console.log('SW Fehler:', err));
         });
     }
-    
 </script>
 </body>
 </html>

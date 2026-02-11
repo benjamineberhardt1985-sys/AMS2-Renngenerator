@@ -132,23 +132,29 @@
     .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; }
 
     .result-content {
-        background: rgba(255, 255, 255, 0.03); /* Minimal heller für besseren Kontrast */
+        background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 68, 0, 0.25);
         border-radius: 15px; 
-        padding: 15px 20px; /* Mehr Innenabstand für ein edleres Layout */
+        padding: 12px 18px; 
         margin: 0 15px;
         text-align: left;
     }
 
-    .res-item { margin-bottom: 8px; /* Mehr Abstand zwischen den Zeilen */
+    .res-item { margin-bottom: 8px; 
         border-left: 2px solid var(--accent); 
-        padding-left: 12px; }
-    .res-item strong { font-size: 0.65rem; /* Kategorie-Titel etwas deutlicher */
-        letter-spacing: 1px; }
-    .res-item span { font-size: 1.05rem; /* Die eigentliche Info (z.B. Fahrzeugname) deutlich größer */
+        padding-left: 12px;
+        display: block; /* Garantiert saubere Zeilentrennung */; }
+    .res-item strong { display: block; /* Schlagwort bekommt eigene Zeile */
+        font-size: 0.65rem; 
+        color: var(--accent); /* HIER: Wieder das leuchtende Orange */
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 1px; }
+    .res-item span { display: block; /* Ergebnis steht sicher darunter */
+        font-size: 1.05rem; 
         font-weight: 700; 
-        line-height: 1.2;
-        color: #fff;; }
+        color: #ffffff; /* HIER: Klares Weiß für die Info */
+        line-height: 1.2; }
 
     .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.3s; }
@@ -346,6 +352,7 @@
 </script>
 </body>
 </html>
+
 
 
 

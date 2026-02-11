@@ -23,16 +23,15 @@
     
     body {
         margin: 0; padding: 25px; /* Knautschzone für den Leuchtrand */
+        margin: 0; 
+        padding: 0; /* Wir regeln den Abstand über die Box selbst */
         font-family: 'Rajdhani', sans-serif;
         background: #020205;
-        color: var(--text);
         height: 100dvh;
         display: flex; 
-        flex-direction: column;
-        justify-content: center;
-        align-items: center; 
+        justify-content: center; /* Horizontale Zentrierung */
+        align-items: center;     /* Vertikale Zentrierung */
         overflow: hidden;
-        position: relative;
     }
 
     body::before {
@@ -46,13 +45,15 @@
         padding: 3px;
         border-radius: 25px;
         overflow: hidden;
-        z-index: 10;
-        width: 380px;
-        max-width: 95vw;
-        max-height: 90dvh; /* Garantiert, dass der Rahmen im Sichtfeld bleibt */
-        margin: auto; 
+        /* WICHTIG: Keine feste Breite von 380px mehr, sondern max-width */
+        width: 92vw; 
+        max-width: 400px; 
+        max-height: 85dvh; 
         display: flex;
         flex-direction: column;
+        /* Zentrierung erzwingen */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .container-box::before {
@@ -67,14 +68,14 @@
     .container {
         background: var(--glass);
         border-radius: 22px;
-        padding: 25px 0; /* Mehr Platz oben und unten */
+        padding: 20px 0;
         width: 100%;
         text-align: center;
         position: relative;
         z-index: 11;
+        /* Sicherstellen, dass nichts übersteht */
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 
     h1 {
@@ -328,6 +329,7 @@
 </script>
 </body>
 </html>
+
 
 
 

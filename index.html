@@ -43,12 +43,12 @@
         overflow: hidden;
         width: 90vw; 
         max-width: 380px; 
-        /* Von 82 auf 85 erhöht, um der Startzeit Platz zu geben */
-        height: 85dvh; 
+        /* Wir nehmen 'min-height' statt 'height', damit die Box atmen kann */
+        min-height: 70dvh; 
+        max-height: 92dvh; 
         display: flex;
         flex-direction: column;
-        /* Schiebt die Box ein Stück weiter nach oben */
-        margin: 2dvh auto auto auto;
+        margin: 10px auto;
     }
 
     .container-box::before {
@@ -66,13 +66,8 @@
         padding: 10px 0;
         width: 100%;
         height: 100%;
-        text-align: center;
-        position: relative;
-        z-index: 11;
         display: flex;
         flex-direction: column;
-        /* Wir verteilen die Elemente jetzt manuell für mehr Kontrolle */
-        justify-content: flex-start;
     }
 
     h1 {
@@ -133,15 +128,20 @@
     .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; }
 
     .result-content {
-        background: rgba(255, 255, 255, 0.03);
+       background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 68, 0, 0.25);
         border-radius: 15px; 
-        padding: 12px 18px 20px 18px; /* Viel Platz unten für den Rahmen */
-        margin: 0 15px 15px 15px; /* Margin unten schiebt Punkte weg */
+        padding: 12px 18px; 
+        margin: 0 15px 10px 15px;
         text-align: left;
+        /* Falls es doch mal zu lang wird, erscheint ein kleiner Scrollbalken nur innerhalb der Karte */
+        overflow-y: auto; 
+        scrollbar-width: none;
     }
 
-    .res-item { margin-bottom: 6px; /* Von 8px auf 6px reduziert */
+ .result-content::-webkit-scrollbar { display: none; }
+        
+    .res-item { margin-bottom: 6px; 
         border-left: 2px solid var(--accent); 
         padding-left: 12px;
         display: block; }
@@ -165,31 +165,22 @@
     .dots { display: none;
         justify-content: center;
         gap: 10px;
-        margin: 10px 0; /* Schiebt die Punkte deutlich nach unten */ }
+        margin: 5px 0; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.3s; }
     .dot.active { background: var(--accent); transform: scale(1.3); box-shadow: 0 0 8px var(--accent); }
 
     button {
-        /* Deine originalen Design-Attribute */
-    background: #111;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 18px; /* Deine optimierte Haptik */
-    border-radius: 12px;
-    font-family: 'Orbitron';
-    font-weight: 900;
-    width: 85%;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    box-shadow: 0 0 15px rgba(255, 68, 0, 0.1);
-    transition: all 0.2s ease;
-
-    /* DIE ENTSCHEIDENDE ÄNDERUNG: */
-    /* margin-top: auto schiebt den Button ans untere Ende der App-Box */
-    /* margin-bottom: 15px hält den Sicherheitsabstand zum Rand */
-    margin: auto auto 15px auto; 
-    display: block;
+        background: #111;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 15px;
+        border-radius: 12px;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        width: 85%;
+        /* Schiebt sich immer ganz nach unten, egal wie lang die Liste oben ist */
+        margin: auto auto 10px auto; 
+        text-transform: uppercase;
 }
 
 button:disabled { 
@@ -365,6 +356,7 @@ button:active {
 </script>
 </body>
 </html>
+
 
 
 

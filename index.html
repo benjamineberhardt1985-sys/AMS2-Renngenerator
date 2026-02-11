@@ -134,11 +134,13 @@
     .result-content {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 68, 0, 0.25);
-        border-radius: 15px; 
-        /* Padding leicht angepasst für mehr Platz unten */
-        padding: 10px 18px; 
-        margin: 0 15px;
+        border-radius: 12px; 
+        /* Hier liegt der Trick: 15px unten statt nur 8px oder 10px */
+        padding: 10px 18px 15px 18px; 
+        margin: 0 12px;
         text-align: left;
+        /* Verhindert, dass der Inhalt den Rahmen "sprengt" */
+        overflow: hidden;
     }
 
     .res-item { margin-bottom: 6px; /* Von 8px auf 6px reduziert */
@@ -156,6 +158,11 @@
         font-weight: 700; 
         color: #ffffff; /* HIER: Klares Weiß für die Info */
         line-height: 1.2; }
+    .res-item:last-child {
+        /* Nimmt den Abstand unter dem letzten Item (Startzeit) weg, 
+           damit der Rahmen Platz zum Atmen hat */
+        margin-bottom: 0; 
+    }
 
     .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.3s; }
@@ -353,6 +360,7 @@
 </script>
 </body>
 </html>
+
 
 
 

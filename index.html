@@ -43,9 +43,12 @@
         overflow: hidden;
         width: 90vw; 
         max-width: 380px; 
-        max-height: 82dvh; 
+        /* Von 75dvh auf 82dvh erhöht - das nutzt den vertikalen Platz besser, 
+           lässt aber unten immer noch genug Puffer für den Leuchtrand */
+        height: 82dvh; 
         display: flex;
         flex-direction: column;
+        margin: auto;
     }
 
     .container-box::before {
@@ -60,7 +63,7 @@
     .container {
         background: var(--glass);
         border-radius: 22px;
-        padding: 15px 0;
+        padding: 15px 0; /* Etwas mehr Luft oben und unten */
         width: 100%;
         height: 100%;
         text-align: center;
@@ -80,18 +83,25 @@
     }
 
     .core-display {
-        width: 70px; height: 70px;
-        margin: 0 auto;
+       width: 80px; /* Von 70px auf 80px erhöht */
+        height: 80px; /* Von 70px auf 80px erhöht */
+        margin: 0 auto 5px; /* Kleiner Abstand nach unten hinzugefügt */
         border-radius: 50%;
         border: 1px solid rgba(255, 68, 0, 0.2);
-        display: flex; align-items: center; justify-content: center;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
         position: relative;
         background: rgba(0,0,0,0.5);
+        box-shadow: inset 0 0 15px rgba(255, 68, 0, 0.1); /* Dezenter innerer Glow */
     }
 
     #suggestion-num {
-        font-family: 'Orbitron'; font-size: 2.8rem; font-weight: 900;
-        color: var(--accent); text-shadow: 0 0 20px var(--accent);
+        font-family: 'Orbitron'; 
+        font-size: 3.2rem; /* Von 2.8rem auf 3.2rem erhöht */
+        font-weight: 900;
+        color: var(--accent); 
+        text-shadow: 0 0 25px var(--accent); /* Glow verstärkt */
         display: none;
     }
 
@@ -122,16 +132,23 @@
     .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; }
 
     .result-content {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 68, 0, 0.2);
+        background: rgba(255, 255, 255, 0.03); /* Minimal heller für besseren Kontrast */
+        border: 1px solid rgba(255, 68, 0, 0.25);
         border-radius: 15px; 
-        padding: 12px 15px; 
+        padding: 15px 20px; /* Mehr Innenabstand für ein edleres Layout */
+        margin: 0 15px;
         text-align: left;
     }
 
-    .res-item { margin-bottom: 5px; border-left: 2px solid var(--accent); padding-left: 10px; }
-    .res-item strong { display: block; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; }
-    .res-item span { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .res-item { margin-bottom: 8px; /* Mehr Abstand zwischen den Zeilen */
+        border-left: 2px solid var(--accent); 
+        padding-left: 12px; }
+    .res-item strong { font-size: 0.65rem; /* Kategorie-Titel etwas deutlicher */
+        letter-spacing: 1px; }
+    .res-item span { font-size: 1.05rem; /* Die eigentliche Info (z.B. Fahrzeugname) deutlich größer */
+        font-weight: 700; 
+        line-height: 1.2;
+        color: #fff;; }
 
     .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.3s; }
@@ -141,18 +158,28 @@
         background: #111;
         border: 1px solid var(--accent);
         color: var(--accent);
-        padding: 15px;
+        /* Von 15px auf 18px erhöht für eine bessere Haptik */
+        padding: 18px; 
         border-radius: 12px;
         font-family: 'Orbitron';
         font-weight: 900;
         width: 85%;
-        margin: 0 auto 10px auto;
+        /* Margin leicht angepasst: 5px oben, 15px unten für mehr Puffer zum Rand */
+        margin: 5px auto 15px auto; 
         cursor: pointer;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 2px; /* Von 1px auf 2px erhöht für mehr "Profi-Look" */
+        box-shadow: 0 0 15px rgba(255, 68, 0, 0.1); /* Dezenter Glow-Effekt hinzugefügt */
+        transition: all 0.2s ease;
     }
 
     button:disabled { opacity: 0.4; }
+
+        button:active {
+        transform: scale(0.96);
+        background: var(--accent);
+        color: #000;
+    }
 
     .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin: 5px 0; }
 </style>
@@ -319,6 +346,7 @@
 </script>
 </body>
 </html>
+
 
 
 

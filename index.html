@@ -38,25 +38,24 @@
 
     /* Der Splashscreen-Stil */
     #pwa-splash {
-        position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    background: #020205; /* Gleiche Farbe wie dein App-Hintergrund */
+   position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #020205;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 9999; /* Immer ganz oben */
-    transition: opacity 0.6s ease-out; /* Weiches Ausblenden */
+    z-index: 9999;
+    transition: opacity 0.6s ease;
+    pointer-events: none; /* Verhindert das Blockieren von Klicks */
 }
 
 #pwa-splash img {
-    width: 160px; /* Schön präsent in der Mitte */
-    height: 160px;
-    margin-bottom: 25px;
-    filter: drop-shadow(0 0 20px var(--accent)); /* Dezenter Glow um dein Icon */
+    width: 160px; 
+    height: 160px; 
+    margin-bottom: 20px; 
+    border-radius: 20px;
     }
 
     .container-box {
@@ -181,8 +180,8 @@
 </head>
 <body>
 <div id="pwa-splash">
-    <img src="icon-512.png" alt="AMS2 Logo">
-    <div class="status" style="margin:0; font-size: 0.8rem;">INITIALIZING SYSTEM...</div>
+    <img src="icon-512.png">
+    <div class="status">INITIALIZING SYSTEM...</div>
 </div>
 <div class="container-box">
     <div class="container">
@@ -206,6 +205,15 @@
 </div>
 
 <script>
+    setTimeout(() => {
+    const splash = document.getElementById('pwa-splash');
+    if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => {
+            splash.style.display = 'none';
+        }, 600);
+    }
+}, 2500);
     const db = {
         classes: [
             { id: 'ARC', name: 'ARC' }, { id: 'CARRERA_CUP', name: 'Carrera Cup' }, { id: 'CATERHAM_620R', name: 'Caterham 620R' },
@@ -253,25 +261,6 @@
         weather: ['Klar', 'Heiter', 'Wolkig', 'Bewölkt', 'Bedeckt', 'Sturm', 'Leichter Regen', 'Regen', 'Nebel mit Regen', 'Starker Nebel', 'Starknebel mit Regen', 'Diesig', 'Gewitter', 'Nebel'],
         times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
-
-    (function() {
-    const hideSplash = () => {
-        const splash = document.getElementById('pwa-splash');
-        if (splash) {
-            splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-            }, 600);
-        }
-    };
-    // Startet sofort, wenn die App bereit ist
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(hideSplash, 2500); 
-    });
-    // Sicherheits-Backup nach 4 Sekunden
-    setTimeout(hideSplash, 4000); 
-})();
-// -----------------------------
     
     const genBtn = document.getElementById('genBtn');
     const status = document.getElementById('status');
@@ -357,24 +346,11 @@
                 .catch(err => console.log('SW Fehler:', err));
         });
     }
-
-    // 2. Splashscreen Timer (unabhängig vom Service Worker)
-    window.addEventListener('load', () => {
-    // Warte 2500ms (2,5 Sekunden), dann blende aus
-    setTimeout(() => {
-        const splash = document.getElementById('pwa-splash');
-        if (splash) {
-            splash.style.opacity = '0'; // Startet die CSS-Transition
-            setTimeout(() => {
-                splash.style.display = 'none'; // Entfernt das Element komplett
-            }, 600); // Wartet, bis das Ausblenden fertig ist
-        }
-    }, 2500); // Zeigt dein 512px Icon für 2,5 Sekunden
-        });
-    }
+    
 </script>
 </body>
 </html>
+
 
 
 

@@ -330,11 +330,16 @@
     genBtn.addEventListener('click', generateRaces);
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGV2ZW50KSB7IH0pOw==');
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registriert!'))
+                .catch(err => console.log('Fehler:', err));
+        });
     }
 </script>
 </body>
 </html>
+
 
 
 

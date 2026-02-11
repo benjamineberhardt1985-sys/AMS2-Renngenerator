@@ -254,6 +254,25 @@
         times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
 
+    (function() {
+    const hideSplash = () => {
+        const splash = document.getElementById('pwa-splash');
+        if (splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 600);
+        }
+    };
+    // Startet sofort, wenn die App bereit ist
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(hideSplash, 2500); 
+    });
+    // Sicherheits-Backup nach 4 Sekunden
+    setTimeout(hideSplash, 4000); 
+})();
+// -----------------------------
+    
     const genBtn = document.getElementById('genBtn');
     const status = document.getElementById('status');
     const loader = document.getElementById('loader');
@@ -356,6 +375,7 @@
 </script>
 </body>
 </html>
+
 
 
 

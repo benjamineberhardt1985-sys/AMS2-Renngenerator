@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ams2-gen-v1';
+const CACHE_NAME = 'ams2-gen-v2';
 const ASSETS = [
   'index.html',
   'manifest.json',
@@ -17,3 +17,4 @@ self.addEventListener('fetch', (e) => {
     caches.match(e.request).then((res) => res || fetch(e.request))
   );
 });
+

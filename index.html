@@ -39,22 +39,24 @@
     /* Der Splashscreen-Stil */
     #pwa-splash {
         position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: #020205;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease;
-    }
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: #020205; /* Gleiche Farbe wie dein App-Hintergrund */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Immer ganz oben */
+    transition: opacity 0.6s ease-out; /* Weiches Ausblenden */
+}
 
-    #pwa-splash img {
-        width: 160px;
-        height: 160px;
-        margin-bottom: 20px;
-        border-radius: 20%;
+#pwa-splash img {
+    width: 160px; /* Schön präsent in der Mitte */
+    height: 160px;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 20px var(--accent)); /* Dezenter Glow um dein Icon */
     }
 
     .container-box {
@@ -336,20 +338,22 @@
 
     // 2. Splashscreen Timer (unabhängig vom Service Worker)
     window.addEventListener('load', () => {
-        setTimeout(() => {
-            const sp = document.getElementById('pwa-splash');
-            if(sp) {
-                sp.style.opacity = '0';
-                setTimeout(() => {
-                    sp.style.display = 'none';
-                }, 500);
-            }
-        }, 2500); // Zeigt dein 512px Icon für 2,5 Sekunden
+    // Warte 2500ms (2,5 Sekunden), dann blende aus
+    setTimeout(() => {
+        const splash = document.getElementById('pwa-splash');
+        if (splash) {
+            splash.style.opacity = '0'; // Startet die CSS-Transition
+            setTimeout(() => {
+                splash.style.display = 'none'; // Entfernt das Element komplett
+            }, 600); // Wartet, bis das Ausblenden fertig ist
+        }
+    }, 2500); // Zeigt dein 512px Icon für 2,5 Sekunden
         });
     }
 </script>
 </body>
 </html>
+
 
 
 

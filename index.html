@@ -103,65 +103,69 @@
     };
     
     async function generateRaces() {
-    const btn = document.getElementById('genBtn');
-    const loader = document.getElementById('loader');
-    const pulse = document.getElementById('pulse');
-    const wrapper = document.getElementById('wrapper');
-    const slider = document.getElementById('slider');
-    
-    btn.disabled = true;
-    loader.style.display = "block";
-    pulse.style.display = "none";
-    wrapper.style.display = "none";
+    genBtn.disabled = true;
+        wrapper.style.display = "none";
+        dotsDiv.style.display = "none";
+        sNum.style.display = "none";
+        pulse.style.display = "none";
+        loader.style.display = "block";
+        status.textContent = "SYSTEM SCANNING...";
 
-    await new Promise(r => setTimeout(r, 1500));
+        await new Promise(r => setTimeout(r, 1800));
 
-    let html = "";
-    for(let i=0; i<3; i++) {
-        const car = db.cars[Math.floor(Math.random() * db.cars.length)];
-        
-        // Filter-Logik
-        let pool = db.tracks;
-        if(car.c.includes("Rallycross") || car.c.includes("Dirt")) {
-            pool = db.tracks.filter(t => t.g === "Off-road");
-        } else if(car.c.includes("Kart")) {
-            pool = db.tracks.filter(t => t.g === "Kart");
-        } else if(car.y < 1995) {
-            pool = db.tracks.filter(t => t.g.includes("Historic"));
-        } else {
-            pool = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.g));
+        let html = "";
+        for(let i=0; i<3; i++) {
+            // Zufälliges Auto wählen
+            const car = db.cars[Math.floor(Math.random() * db.cars.length)];
+            
+            // Intelligenter Strecken-Filter basierend auf Klasse (car.c) und Jahr (car.y)
+            let pool = db.tracks;
+            if(car.c.includes("Rallycross") || car.c.includes("Dirt") || car.c.includes("RX")) {
+                pool = db.tracks.filter(t => t.g === "Off-road");
+            } else if(car.c.includes("Kart")) {
+                pool = db.tracks.filter(t => t.g === "Kart");
+            } else if(car.y < 1995) {
+                pool = db.tracks.filter(t => t.g.includes("Historic"));
+            } else {
+                pool = db.tracks.filter(t => !["Off-road", "Kart"].includes(t.g));
+            }
+
+            // Fallback falls Pool leer
+            if(pool.length === 0) pool = db.tracks;
+            const track = pool[Math.floor(Math.random() * pool.length)];
+
+            // WICHTIG: Hier nutzen wir jetzt die Abkürzungen car.n, car.c, track.l, track.t, track.la
+            html += `
+                <div class="race-card">
+                    <div class="result-content">
+                        <div class="res-item"><strong>Klasse</strong><span>${car.c}</span></div>
+                        <div class="res-item"><strong>Fahrzeug</strong><span>${car.n}</span></div>
+                        <div class="res-item"><strong>Land</strong><span>${track.l}</span></div>
+                        <div class="res-item"><strong>Strecke</strong><span>${track.t}</span></div>
+                        <div class="res-item"><strong>Layout</strong><span>${track.la}</span></div>
+                        <div class="res-item"><strong>Jahreszeit</strong><span>${db.seasons[Math.floor(Math.random()*db.seasons.length)]}</span></div>
+                        <div class="res-item"><strong>Wetter</strong><span>${db.weather[Math.floor(Math.random()*db.weather.length)]}</span></div>
+                        <div class="res-item"><strong>Startzeit</strong><span>${db.times[Math.floor(Math.random()*db.times.length)]}</span></div>
+                    </div>
+                </div>`;
         }
 
-        if(pool.length === 0) pool = db.tracks;
-        const track = pool[Math.floor(Math.random() * pool.length)];
-
-        html += `
-            <div class="race-card">
-                <div class="result-content">
-                    <div class="res-item"><strong>Klasse</strong><span>${car.c}</span></div>
-                    <div class="res-item"><strong>Fahrzeug</strong><span>${car.n}</span></div>
-                    <div class="res-item"><strong>Land</strong><span>${track.l}</span></div>
-                    <div class="res-item"><strong>Strecke</strong><span>${track.t}</span></div>
-                    <div class="res-item"><strong>Layout</strong><span>${track.la}</span></div>
-                    <div class="res-item"><strong>Jahreszeit</strong><span>${db.seasons[Math.floor(Math.random()*db.seasons.length)]}</span></div>
-                    <div class="res-item"><strong>Wetter</strong><span>${db.weather[Math.floor(Math.random()*db.weather.length)]}</span></div>
-                    <div class="res-item"><strong>Startzeit</strong><span>${db.times[Math.floor(Math.random()*db.times.length)]}</span></div>
-                </div>
-            </div>`;
-    }
-
-    slider.innerHTML = html;
-    loader.style.display = "none";
-    wrapper.style.display = "block";
-    document.getElementById('suggestion-num').style.display = "block";
-    document.getElementById('dots').style.display = "flex";
-    btn.disabled = false;
+        slider.innerHTML = html;
+        wrapper.style.display = "block";
+        dotsDiv.style.display = "flex";
+        loader.style.display = "none";
+        sNum.style.display = "block";
+        sNum.textContent = "1";
+        status.textContent = "SZENARIEN GELADEN";
+        genBtn.disabled = false;
+        genBtn.textContent = "Neu berechnen";
 }
 
 document.getElementById('genBtn').addEventListener('click', generateRaces);
 </script>
 </body>
 </html>
+
 
 
 

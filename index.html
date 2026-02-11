@@ -36,28 +36,6 @@
         overflow: hidden;
     }
 
-    /* Der Splashscreen-Stil */
-    #pwa-splash {
-   position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #020205;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.6s ease;
-    pointer-events: none; /* Verhindert das Blockieren von Klicks */
-}
-
-#pwa-splash img {
-    width: 160px; 
-    height: 160px; 
-    margin-bottom: 20px; 
-    border-radius: 20px;
-    }
-
     .container-box {
         position: relative;
         padding: 3px;
@@ -65,7 +43,7 @@
         overflow: hidden;
         width: 90vw; 
         max-width: 380px; 
-        max-height: 82dvh; /* Schutz für den unteren Rand */
+        max-height: 82dvh; 
         display: flex;
         flex-direction: column;
     }
@@ -97,6 +75,7 @@
         font-family: 'Orbitron', sans-serif;
         font-size: 1.1rem;
         margin: 5px 0;
+        color: var(--text);
         text-shadow: 0 0 10px var(--accent);
     }
 
@@ -179,10 +158,7 @@
 </style>
 </head>
 <body>
-<div id="pwa-splash">
-    <img src="icon-512.png">
-    <div class="status">INITIALIZING SYSTEM...</div>
-</div>
+
 <div class="container-box">
     <div class="container">
         <h1>AMS2 Renngenerator</h1>
@@ -205,15 +181,6 @@
 </div>
 
 <script>
-    setTimeout(() => {
-    const splash = document.getElementById('pwa-splash');
-    if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => {
-            splash.style.display = 'none';
-        }, 600);
-    }
-}, 2500);
     const db = {
         classes: [
             { id: 'ARC', name: 'ARC' }, { id: 'CARRERA_CUP', name: 'Carrera Cup' }, { id: 'CATERHAM_620R', name: 'Caterham 620R' },
@@ -350,6 +317,7 @@
 </script>
 </body>
 </html>
+
 
 
 

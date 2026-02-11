@@ -14,6 +14,7 @@
     <style>
     :root {
         --accent: #ff4400;
+        --text: #e8e8e8;
         --glass: rgba(6, 6, 12, 0.98);
     }
 
@@ -35,14 +36,35 @@
         overflow: hidden;
     }
 
+    /* Der Splashscreen-Stil */
+    #pwa-splash {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #020205;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+    }
+
+    #pwa-splash img {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 20px;
+        border-radius: 20%;
+    }
+
     .container-box {
         position: relative;
         padding: 3px;
         border-radius: 25px;
         overflow: hidden;
-        width: 90vw; /* 5% Puffer links und rechts für den Rand */
+        width: 90vw; 
         max-width: 380px; 
-        max-height: 82dvh; /* Schutzpuffer für den unteren Rand */
+        max-height: 82dvh; /* Schutz für den unteren Rand */
         display: flex;
         flex-direction: column;
     }
@@ -67,12 +89,12 @@
         z-index: 11;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Verteilt Title, Kreis, Karte und Button optimal */
+        justify-content: space-between;
     }
 
     h1 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         margin: 5px 0;
         text-shadow: 0 0 10px var(--accent);
     }
@@ -88,8 +110,21 @@
     }
 
     #suggestion-num {
-        font-family: 'Orbitron'; font-size: 2.5rem; font-weight: 900;
-        color: var(--accent); text-shadow: 0 0 15px var(--accent);
+        font-family: 'Orbitron'; font-size: 2.8rem; font-weight: 900;
+        color: var(--accent); text-shadow: 0 0 20px var(--accent);
+        display: none;
+    }
+
+    .standby-pulse {
+        width: 35px; height: 35px;
+        background: var(--accent); border-radius: 50%;
+        animation: pulse 2.5s infinite;
+        box-shadow: 0 0 30px var(--accent);
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(0.85); opacity: 0.6; }
+        50% { transform: scale(1.1); opacity: 0.3; }
     }
 
     .loader-ring {
@@ -98,46 +133,46 @@
         border-radius: 50%; display: none;
         animation: rotate 1.2s linear infinite;
     }
+
     @keyframes rotate { to { transform: rotate(360deg); } }
 
-    .slider-wrapper { overflow: hidden; width: 100%; flex-grow: 1; display: flex; align-items: center; }
-    .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; width: 100%; }
+    .slider-wrapper { display: none; overflow: hidden; width: 100%; margin: 10px 0; }
+    .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
     .race-cards-container::-webkit-scrollbar { display: none; }
-    .race-card { min-width: 100%; padding: 0 15px; scroll-snap-align: center; }
+    .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; }
 
     .result-content {
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 68, 0, 0.2);
-        border-radius: 12px; 
-        padding: 10px 15px;
+        border-radius: 15px; 
+        padding: 12px 15px; 
         text-align: left;
     }
 
-    .res-item { margin-bottom: 4px; border-left: 2px solid var(--accent); padding-left: 10px; }
+    .res-item { margin-bottom: 5px; border-left: 2px solid var(--accent); padding-left: 10px; }
     .res-item strong { display: block; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; }
-    .res-item span { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .res-item span { font-size: 0.95rem; font-weight: 700; color: #fff; }
 
-    .dots { display: flex; justify-content: center; gap: 8px; margin: 5px 0; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
-    .dot.active { background: var(--accent); }
+    .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: 0.3s; }
+    .dot.active { background: var(--accent); transform: scale(1.3); box-shadow: 0 0 8px var(--accent); }
 
-    /* DEIN BUTTON - WIEDER INTEGRIERT UND OPTIMIERT */
     button {
-        background: linear-gradient(45deg, #111, #222);
+        background: #111;
         border: 1px solid var(--accent);
         color: var(--accent);
-        padding: 14px;
+        padding: 15px;
         border-radius: 12px;
         font-family: 'Orbitron';
         font-weight: 900;
         width: 85%;
-        margin: 5px auto 10px auto;
-        text-transform: uppercase;
-        letter-spacing: 2px;
+        margin: 0 auto 10px auto;
         cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    
-    button:active { transform: scale(0.98); }
+
+    button:disabled { opacity: 0.4; }
 
     .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin: 5px 0; }
 </style>
@@ -301,6 +336,7 @@
 </script>
 </body>
 </html>
+
 
 
 

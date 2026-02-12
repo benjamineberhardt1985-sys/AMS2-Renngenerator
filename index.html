@@ -14,11 +14,11 @@
     <script src="db.js"></script>
 
     <style>
-        :root { --accent: #ff4400; --bg: #05050a; --glass: rgba(15, 15, 25, 0.95); --text: #e0e0e0; }
+        :root { --accent: #ff4400; --bg: #020205; --glass: rgba(15, 15, 25, 0.95); --text: #e0e0e0; }
         
         body { 
             margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; 
-            background: #020205; color: var(--text); 
+            background: var(--bg); color: var(--text); 
             min-height: 100dvh; display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center; 
             overflow-x: hidden; overflow-y: auto; 
@@ -66,7 +66,7 @@
         #resultHeader { display: none; width: 100%; flex-direction: column; align-items: center; padding: 0; margin-bottom: 15px; }
 
         .slider-wrapper { display: none; width: 100%; margin-bottom: 10px; overflow: hidden; }
-        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: auto !important; }
         .race-cards-container::-webkit-scrollbar { display: none; }
         .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; box-sizing: border-box; }
         .result-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 68, 0, 0.2); border-radius: 15px; padding: 12px; text-align: left; }
@@ -85,17 +85,17 @@
         }
         #genBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        #installBanner {
+        #installBtn {
             display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--accent); color: #000; padding: 10px 20px; border-radius: 50px;
-            font-family: 'Orbitron'; font-size: 0.7rem; font-weight: 900; z-index: 1000;
-            box-shadow: 0 0 20px var(--accent); cursor: pointer;
+            background: var(--accent); color: #000; padding: 12px 24px; border-radius: 50px;
+            font-family: 'Orbitron'; font-size: 0.75rem; font-weight: 900; z-index: 9999;
+            box-shadow: 0 0 25px var(--accent); cursor: pointer; border: none;
         }
     </style>
 </head>
 <body>
 
-<div id="installBanner">APP INSTALLIEREN</div>
+<button id="installBtn">APP INSTALLIEREN</button>
 
 <div class="container-box">
     <div class="container">
@@ -131,28 +131,35 @@
 </div>
 
 <script>
+    // --- SERVICE WORKER REGISTRATION ---
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW error', err));
+        });
     }
 
+    // --- INSTALL PROMPT ---
     let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        document.getElementById('installBanner').style.display = 'block';
+        installBtn.style.display = 'block';
     });
 
-    document.getElementById('installBanner').addEventListener('click', async () => {
+    installBtn.addEventListener('click', async () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                document.getElementById('installBanner').style.display = 'none';
-            }
+            if (outcome === 'accepted') installBtn.style.display = 'none';
             deferredPrompt = null;
         }
     });
 
+    // --- GENERATOR LOGIK ---
     const seasonsList = ['Frühling', 'Sommer', 'Herbst', 'Winter'];
     const weatherList = ['Heiter', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'];
     const timesList = ['08:00', '12:00', '16:00', '20:00', '00:00'];
@@ -208,9 +215,6 @@
         loader.style.display = "block";
         status.textContent = "BERECHNE SZENARIEN...";
 
-        // RESET SCROLL POSITION ZU BEGINN
-        slider.scrollLeft = 0;
-
         await new Promise(r => setTimeout(r, 1200));
 
         let html = "";
@@ -254,15 +258,20 @@
         }
 
         slider.innerHTML = html;
-        // SICHERHEITSHALBER NOCHMAL RESET NACH DEM RENDERN
-        slider.scrollLeft = 0; 
         
+        // --- DER FIX FÜR DEN SLIDER RESET ---
         wrapper.style.display = "block";
         dotsDiv.style.display = "flex";
+        
+        // Timeout erzwingt den Reset NACHDEM das Display auf block steht
+        setTimeout(() => {
+            slider.scrollTo({ left: 0, behavior: 'instant' });
+            sNum.textContent = "1";
+            document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === 0));
+        }, 10);
+
         loader.style.display = "none";
         sNum.style.display = "block";
-        sNum.textContent = "1";
-        
         status.textContent = "SZENARIEN GELADEN";
         genBtn.disabled = false;
         genBtn.textContent = "VORSCHLÄGE AKTUALISIEREN";
@@ -271,3 +280,4 @@
 
 </body>
 </html>
+

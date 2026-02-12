@@ -187,10 +187,21 @@
             <button class="group-btn" onclick="selectGroup('spezial', this)">Kart & Spezial</button>
         </div>
 
+        <div id="resultHeader" style="display: none; padding: 0 25px; margin-bottom: 15px; width: 100%;">
+            <div id="activeCategoryDisplay" class="group-btn active" style="margin-bottom: 8px; cursor: default; border-color: var(--accent);">KATEGORIE</div>
+            <button onclick="goBack()" style="width: 100%; padding: 8px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2); color: #888; background: transparent; font-family: 'Orbitron'; border-radius: 8px; cursor: pointer;">← ANDERE KATEGORIE WÄHLEN</button>
+        </div>
+
         <div class="slider-wrapper" id="wrapper">
             <div class="race-cards-container" id="slider"></div>
         </div>
-        <div class="dots" id="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+        
+        <div class="dots" id="dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        
         <button id="genBtn">START GENERATION</button>
     </div>
 </div>
@@ -211,21 +222,33 @@
         times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
     };
     
-    // --- NEU: Globale Variable für den Filter ---
+    // --- Logik-Steuerung ---
     let currentFilter = 'all';
+    let currentCategoryName = 'Alle Klassen';
 
-    // --- NEU: Funktion zur Steuerung der Gruppen-Buttons ---
     function selectGroup(group, btn) {
         currentFilter = group;
-        // Alle Buttons zurücksetzen
+        currentCategoryName = btn.textContent;
         document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-        // Geklickten Button aktivieren
         btn.classList.add('active');
-        // Status kurz aktualisieren
-        document.getElementById('status').textContent = "MODUS: " + btn.textContent.toUpperCase();
+        document.getElementById('status').textContent = "BEREIT FÜR: " + currentCategoryName.toUpperCase();
     }
 
-    // Variablen-Referenzen
+    // Neue Funktion: Bringt dich zurück zur Auswahlansicht
+    function goBack() {
+        document.getElementById('groupSelector').style.display = 'flex';
+        document.getElementById('resultHeader').style.display = 'none';
+        document.getElementById('wrapper').style.display = 'none';
+        document.getElementById('dots').style.display = 'none';
+        document.getElementById('suggestion-num').style.display = 'none';
+        document.getElementById('pulse').style.display = 'block';
+        
+        const genBtn = document.getElementById('genBtn');
+        genBtn.style.display = 'block';
+        genBtn.textContent = 'START GENERATION';
+        document.getElementById('status').textContent = "SYSTEM READY";
+    }
+
     const genBtn = document.getElementById('genBtn');
     const loader = document.getElementById('loader');
     const status = document.getElementById('status');
@@ -234,18 +257,20 @@
     const slider = document.getElementById('slider');
     const wrapper = document.getElementById('wrapper');
     const dotsDiv = document.getElementById('dots');
-    const dots = document.querySelectorAll('.dot');
 
-    // Slider-Logik: Aktualisiert die Nummer und die Punkte beim Wischen
     slider.addEventListener('scroll', () => {
         const index = Math.round(slider.scrollLeft / slider.offsetWidth);
         sNum.textContent = index + 1;
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
     });
 
     async function generateRaces() {
+        // UI Umschalten beim Start
+        document.getElementById('groupSelector').style.display = 'none';
+        document.getElementById('resultHeader').style.display = 'block';
+        document.getElementById('activeCategoryDisplay').textContent = currentCategoryName;
+        
         genBtn.disabled = true;
         wrapper.style.display = "none";
         dotsDiv.style.display = "none";
@@ -254,48 +279,32 @@
         loader.style.display = "block";
         status.textContent = "BERECHNE SZENARIEN...";
 
-        // Simulation der Berechnung
         await new Promise(r => setTimeout(r, 1500));
 
-        // 1. Fahrzeuge nach gewählter Gruppe filtern
-        let carPool = currentFilter === 'all' 
-            ? db.cars 
-            : db.cars.filter(c => c.g === currentFilter);
-        
-        // Sicherheits-Fallback: Falls eine Gruppe leer sein sollte, nimm alle
+        let carPool = currentFilter === 'all' ? db.cars : db.cars.filter(c => c.g === currentFilter);
         if (carPool.length === 0) carPool = db.cars;
 
         let html = "";
         for(let i=0; i<3; i++) {
             const car = carPool[Math.floor(Math.random() * carPool.length)];
             
-            // 2. Intelligente Strecken-Logik basierend auf der Fahrzeuggruppe
             let trackPool = db.tracks;
-            const carClass = car.c.toLowerCase();
+            const cClass = car.c.toLowerCase();
 
+            // Intelligenter Streckenfilter
             if (car.g === 'retro') {
-                // Retroracing -> Nur historische Layouts oder Klassiker (Grade 3)
                 trackPool = db.tracks.filter(t => t.gr === "Historic" || t.gr === "Grade 3");
-            } else if (carClass.includes("kart")) {
-                // Karts -> Nur Kartstrecken
+            } else if (cClass.includes("kart")) {
                 trackPool = db.tracks.filter(t => t.gr === "Kart");
-            } else if (carClass.includes("rx") || carClass.includes("truck") || carClass.includes("dirt")) {
-                // Rallycross/Trucks -> Nur Off-road Strecken
+            } else if (cClass.includes("rx") || cClass.includes("truck") || cClass.includes("dirt")) {
                 trackPool = db.tracks.filter(t => t.gr === "Off-road");
-            } else if (car.g === 'formel' || car.g === 'gt') {
-                // Moderne Rennwagen -> Nur Grade 1 und Grade 2 (GP Strecken)
-                trackPool = db.tracks.filter(t => t.gr === "Grade 1" || t.gr === "Grade 2");
             } else {
-                // Standard: Alles außer Spezialstrecken (Kart/RX)
                 trackPool = db.tracks.filter(t => !["Kart", "Off-road"].includes(t.gr));
             }
 
-            // Fallback falls der Filter keine Treffer liefert
             if(trackPool.length === 0) trackPool = db.tracks;
-            
             const track = trackPool[Math.floor(Math.random() * trackPool.length)];
 
-            // 3. Die Karte zusammenbauen (mit deinen neuen Datenfeldern)
             html += `
                 <div class="race-card">
                     <div class="result-content">
@@ -319,13 +328,12 @@
         sNum.style.display = "block";
         sNum.textContent = "1";
         
-        // Punkte (Dots) zurücksetzen
         const dots = document.querySelectorAll('.dot');
         dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
 
         status.textContent = "SZENARIEN GELADEN";
         genBtn.disabled = false;
-        genBtn.textContent = "Neu generieren";
+        genBtn.textContent = "Vorschläge aktualisieren";
     }
 
     genBtn.addEventListener('click', generateRaces);
@@ -342,6 +350,7 @@
 </script>
 </body>
 </html>
+
 
 
 

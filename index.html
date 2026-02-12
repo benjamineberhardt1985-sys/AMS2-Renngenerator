@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AMS2 Renngenerator Pro</title>
+    
+    <meta name="theme-color" content="#ff4400">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     
     <script src="db.js"></script>
@@ -58,11 +63,10 @@
         }
         .group-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); border-color: var(--accent); }
 
-        /* FIX: Zentrierter Header */
         #resultHeader { display: none; width: 100%; flex-direction: column; align-items: center; padding: 0; margin-bottom: 15px; }
 
         .slider-wrapper { display: none; width: 100%; margin-bottom: 10px; overflow: hidden; }
-        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
         .race-cards-container::-webkit-scrollbar { display: none; }
         .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; box-sizing: border-box; }
         .result-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 68, 0, 0.2); border-radius: 15px; padding: 12px; text-align: left; }
@@ -80,9 +84,18 @@
             font-weight: 900; font-size: 0.9rem; cursor: pointer; transition: 0.3s; margin: 10px auto;
         }
         #genBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #installBanner {
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #000; padding: 10px 20px; border-radius: 50px;
+            font-family: 'Orbitron'; font-size: 0.7rem; font-weight: 900; z-index: 1000;
+            box-shadow: 0 0 20px var(--accent); cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+<div id="installBanner">APP INSTALLIEREN</div>
 
 <div class="container-box">
     <div class="container">
@@ -118,7 +131,28 @@
 </div>
 
 <script>
-    // Diese Listen sind hier fest verbaut, damit db.js sauber bleibt
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('installBanner').style.display = 'block';
+    });
+
+    document.getElementById('installBanner').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('installBanner').style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+    });
+
     const seasonsList = ['Frühling', 'Sommer', 'Herbst', 'Winter'];
     const weatherList = ['Heiter', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'];
     const timesList = ['08:00', '12:00', '16:00', '20:00', '00:00'];
@@ -174,6 +208,9 @@
         loader.style.display = "block";
         status.textContent = "BERECHNE SZENARIEN...";
 
+        // RESET SCROLL POSITION ZU BEGINN
+        slider.scrollLeft = 0;
+
         await new Promise(r => setTimeout(r, 1200));
 
         let html = "";
@@ -184,7 +221,6 @@
             let trackPool = db.tracks;
             const carClass = car.c.toLowerCase();
 
-            // Intelligente Filter-Logik
             if (car.preferOval) {
                 trackPool = db.tracks.filter(t => t.isOval === true);
             } else if (carClass.includes("kart")) {
@@ -198,7 +234,6 @@
             if(trackPool.length === 0) trackPool = db.tracks;
             const track = trackPool[Math.floor(Math.random() * trackPool.length)];
 
-            // Werte aus den internen Listen würfeln
             const ssn = seasonsList[Math.floor(Math.random() * seasonsList.length)];
             const wtr = weatherList[Math.floor(Math.random() * weatherList.length)];
             const tme = timesList[Math.floor(Math.random() * timesList.length)];
@@ -219,7 +254,9 @@
         }
 
         slider.innerHTML = html;
+        // SICHERHEITSHALBER NOCHMAL RESET NACH DEM RENDERN
         slider.scrollLeft = 0; 
+        
         wrapper.style.display = "block";
         dotsDiv.style.display = "flex";
         loader.style.display = "none";

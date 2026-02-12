@@ -20,14 +20,23 @@
             margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; 
             background: var(--bg); color: var(--text); 
             min-height: 100dvh; display: flex; flex-direction: column; 
-            justify-content: flex-start; align-items: center; 
-            overflow-x: hidden; overflow-y: auto; 
+            /* FIX 1: Zentrierung */
+            justify-content: center; 
+            align-items: center; 
+            overflow-x: hidden; 
+            overflow-y: auto;
+            /* FIX 2: Puffer unten gegen Abschneiden */
+            padding-bottom: 40px; 
+            box-sizing: border-box;
         }
 
         .container-box { 
             position: relative; padding: 3px; border-radius: 25px; 
             overflow: hidden; width: 92vw; max-width: 380px; 
-            margin: 20px auto; min-height: fit-content; 
+            /* FIX 3: Flex-Verhalten */
+            flex-shrink: 0;
+            margin: auto; 
+            min-height: fit-content; 
         }
 
         .container-box::before { 
@@ -86,10 +95,16 @@
         #genBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         #installBtn {
-            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--accent); color: #000; padding: 12px 24px; border-radius: 50px;
-            font-family: 'Orbitron'; font-size: 0.75rem; font-weight: 900; z-index: 9999;
+            display: none; position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #000; padding: 10px 20px; border-radius: 50px;
+            font-family: 'Orbitron'; font-size: 0.7rem; font-weight: 900; z-index: 9999;
             box-shadow: 0 0 25px var(--accent); cursor: pointer; border: none;
+        }
+
+        /* Versteckt Button in der App und zentriert alles */
+        @media (display-mode: standalone) {
+            #installBtn { display: none !important; }
+            body { padding-bottom: 0; }
         }
     </style>
 </head>
@@ -131,7 +146,6 @@
 </div>
 
 <script>
-    // --- PWA LOGIK ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
@@ -156,7 +170,6 @@
         }
     });
 
-    // --- DATEN LISTEN ---
     const seasonsList = ['Frühling', 'Sommer', 'Herbst', 'Winter'];
     const weatherList = ['Heiter', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'];
     const timesList = ['08:00', '12:00', '16:00', '20:00', '00:00'];
@@ -222,7 +235,6 @@
             let trackPool = db.tracks;
             const carClass = car.c.toLowerCase();
 
-            // Intelligente Filter-Verknüpfung
             if (car.preferOval) {
                 trackPool = db.tracks.filter(t => t.isOval === true);
             } else if (carClass.includes("kart")) {
@@ -255,7 +267,6 @@
         wrapper.style.display = "block";
         dotsDiv.style.display = "flex";
 
-        // --- ANDROID SCROLL RESET FIX ---
         requestAnimationFrame(() => {
             setTimeout(() => {
                 slider.scrollTo({ left: 0, behavior: 'auto' });
@@ -274,3 +285,4 @@
 
 </body>
 </html>
+

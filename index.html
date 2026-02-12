@@ -66,7 +66,7 @@
         #resultHeader { display: none; width: 100%; flex-direction: column; align-items: center; padding: 0; margin-bottom: 15px; }
 
         .slider-wrapper { display: none; width: 100%; margin-bottom: 10px; overflow: hidden; }
-        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: auto !important; }
+        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: auto; }
         .race-cards-container::-webkit-scrollbar { display: none; }
         .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; box-sizing: border-box; }
         .result-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 68, 0, 0.2); border-radius: 15px; padding: 12px; text-align: left; }
@@ -131,16 +131,13 @@
 </div>
 
 <script>
-    // --- SERVICE WORKER REGISTRATION ---
+    // --- PWA LOGIK ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW error', err));
+            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
         });
     }
 
-    // --- INSTALL PROMPT ---
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
 
@@ -159,7 +156,7 @@
         }
     });
 
-    // --- GENERATOR LOGIK ---
+    // --- DATEN LISTEN ---
     const seasonsList = ['Frühling', 'Sommer', 'Herbst', 'Winter'];
     const weatherList = ['Heiter', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'];
     const timesList = ['08:00', '12:00', '16:00', '20:00', '00:00'];
@@ -197,7 +194,7 @@
     }
 
     slider.addEventListener('scroll', () => {
-        const index = Math.round(slider.scrollLeft / slider.offsetWidth);
+        const index = Math.round(slider.scrollLeft / (slider.offsetWidth || 1));
         sNum.textContent = index + 1;
         document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
     });
@@ -225,6 +222,7 @@
             let trackPool = db.tracks;
             const carClass = car.c.toLowerCase();
 
+            // Intelligente Filter-Verknüpfung
             if (car.preferOval) {
                 trackPool = db.tracks.filter(t => t.isOval === true);
             } else if (carClass.includes("kart")) {
@@ -238,10 +236,6 @@
             if(trackPool.length === 0) trackPool = db.tracks;
             const track = trackPool[Math.floor(Math.random() * trackPool.length)];
 
-            const ssn = seasonsList[Math.floor(Math.random() * seasonsList.length)];
-            const wtr = weatherList[Math.floor(Math.random() * weatherList.length)];
-            const tme = timesList[Math.floor(Math.random() * timesList.length)];
-
             html += `
                 <div class="race-card">
                     <div class="result-content">
@@ -250,25 +244,25 @@
                         <div class="res-item"><strong>Land</strong><span>${track.c}</span></div>
                         <div class="res-item"><strong>Strecke</strong><span>${track.t}</span></div>
                         <div class="res-item"><strong>Layout</strong><span>${track.l}</span></div>
-                        <div class="res-item"><strong>Jahreszeit</strong><span>${ssn}</span></div>
-                        <div class="res-item"><strong>Wetter</strong><span>${wtr}</span></div>
-                        <div class="res-item"><strong>Startzeit</strong><span>${tme}</span></div>
+                        <div class="res-item"><strong>Jahreszeit</strong><span>${seasonsList[Math.floor(Math.random()*seasonsList.length)]}</span></div>
+                        <div class="res-item"><strong>Wetter</strong><span>${weatherList[Math.floor(Math.random()*weatherList.length)]}</span></div>
+                        <div class="res-item"><strong>Startzeit</strong><span>${timesList[Math.floor(Math.random()*timesList.length)]}</span></div>
                     </div>
                 </div>`;
         }
 
         slider.innerHTML = html;
-        
-        // --- DER FIX FÜR DEN SLIDER RESET ---
         wrapper.style.display = "block";
         dotsDiv.style.display = "flex";
-        
-        // Timeout erzwingt den Reset NACHDEM das Display auf block steht
-        setTimeout(() => {
-            slider.scrollTo({ left: 0, behavior: 'instant' });
-            sNum.textContent = "1";
-            document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === 0));
-        }, 10);
+
+        // --- ANDROID SCROLL RESET FIX ---
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                slider.scrollTo({ left: 0, behavior: 'auto' });
+                sNum.textContent = "1";
+                document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === 0));
+            }, 60);
+        });
 
         loader.style.display = "none";
         sNum.style.display = "block";
@@ -280,4 +274,3 @@
 
 </body>
 </html>
-

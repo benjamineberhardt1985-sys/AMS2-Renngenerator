@@ -2,36 +2,27 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>AMS2 Renngenerator - Full Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AMS2 Renngenerator Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ff4400">
-    <meta name="mobile-web-app-capable" content="yes">
+    <script src="db.js"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #ff4400; --text: #e8e8e8; --glass: rgba(6, 6, 12, 0.98); }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { --accent: #ff4400; --bg: #05050a; --glass: rgba(15, 15, 25, 0.95); --text: #e0e0e0; }
         
         body { 
             margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; 
             background: #020205; color: var(--text); 
-            min-height: 100dvh; 
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; /* Startet oben, damit Scrollen möglich ist */
-            align-items: center; 
-            overflow-x: hidden;
-            overflow-y: auto; /* Wichtig für längere Inhalte auf kleinen Handys */
-            position: relative; 
+            min-height: 100dvh; display: flex; flex-direction: column; 
+            justify-content: flex-start; align-items: center; 
+            overflow-x: hidden; overflow-y: auto; 
         }
 
         .container-box { 
             position: relative; padding: 3px; border-radius: 25px; 
             overflow: hidden; width: 92vw; max-width: 380px; 
-            display: flex; flex-direction: column; 
-            margin: 20px auto; 
-            min-height: fit-content; /* Box wächst mit dem Inhalt */
+            margin: 20px auto; min-height: fit-content; 
         }
 
         .container-box::before { 
@@ -39,136 +30,56 @@
             background: conic-gradient(transparent, var(--accent), transparent 30%); 
             top: -25%; left: -25%; animation: rotateFrame 4s linear infinite; 
         }
-
         @keyframes rotateFrame { to { transform: rotate(360deg); } }
 
         .container { 
             background: var(--glass); border-radius: 22px; 
-            padding: 15px 0; /* Kompakteres Padding */
-            width: 100%; text-align: center; 
-            position: relative; z-index: 11; 
-            display: flex; flex-direction: column;
-            height: 100%;
+            padding: 15px 0; width: 100%; text-align: center; 
+            position: relative; z-index: 11; display: flex; flex-direction: column;
         }
 
         h1 { font-family: 'Orbitron', sans-serif; font-size: 1.0rem; margin: 5px 0 10px 0; text-shadow: 0 0 10px var(--accent); }
 
-        .core-display { 
-            width: 75px; height: 75px; margin: 0 auto 10px; 
-            border-radius: 50%; border: 1px solid rgba(255, 68, 0, 0.2); 
-            display: flex; align-items: center; justify-content: center; 
-            position: relative; background: rgba(0,0,0,0.5); 
-        }
-
-        #suggestion-num { 
-            font-family: 'Orbitron'; font-size: 3rem; font-weight: 900; 
-            color: var(--accent); text-shadow: 0 0 20px var(--accent); 
-            display: none; 
-        }
-
-        .standby-pulse { 
-            width: 30px; height: 30px; background: var(--accent); 
-            border-radius: 50%; animation: pulse 2.5s infinite; 
-            box-shadow: 0 0 30px var(--accent); 
-        }
-
-        @keyframes pulse { 
-            0%, 100% { transform: scale(0.85); opacity: 0.6; } 
-            50% { transform: scale(1.1); opacity: 0.3; } 
-        }
-
-        .loader-ring { 
-            position: absolute; width: 100%; height: 100%; 
-            border: 3px solid transparent; border-top-color: var(--accent); 
-            border-radius: 50%; display: none; animation: rotate 1.2s linear infinite; 
-        }
-
+        .core-display { width: 75px; height: 75px; margin: 0 auto 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 68, 0, 0.2); }
+        #suggestion-num { font-family: 'Orbitron'; font-size: 3rem; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent); display: none; }
+        .standby-pulse { width: 30px; height: 30px; background: var(--accent); border-radius: 50%; animation: pulse 2.5s infinite; box-shadow: 0 0 30px var(--accent); }
+        @keyframes pulse { 0%, 100% { transform: scale(0.85); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 0.3; } }
+        .loader-ring { position: absolute; width: 100%; height: 100%; border: 3px solid transparent; border-top-color: var(--accent); border-radius: 50%; display: none; animation: rotate 1.2s linear infinite; }
         @keyframes rotate { to { transform: rotate(360deg); } }
 
-        .group-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 0 30px;
-            margin: 10px 0 15px 0;
-            width: 100%;
-        }
+        .status { font-family: 'Orbitron'; font-size: 0.6rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; }
 
-        .group-btn {
-            background: rgba(255, 68, 0, 0.05);
-            border: 1px solid rgba(255, 68, 0, 0.3);
-            color: #fff;
-            padding: 12px 10px;
-            border-radius: 12px;
-            font-family: 'Rajdhani';
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 280px;
+        .group-container { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 30px; margin: 10px 0; width: 100%; box-sizing: border-box; }
+        .group-btn { 
+            background: rgba(255, 68, 0, 0.05); border: 1px solid rgba(255, 68, 0, 0.3); 
+            color: #fff; padding: 12px; border-radius: 10px; font-family: 'Rajdhani'; 
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase; 
+            cursor: pointer; transition: 0.3s; width: 100%; max-width: 280px; box-sizing: border-box;
         }
+        .group-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); border-color: var(--accent); }
 
-        .group-btn.active {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 0 20px var(--accent);
-            border-color: var(--accent);
-        }
+        /* FIX: Zentrierter Header */
+        #resultHeader { display: none; width: 100%; flex-direction: column; align-items: center; padding: 0; margin-bottom: 15px; }
 
-        .slider-wrapper { display: none; overflow: hidden; width: 100%; margin-bottom: 5px; }
-
-        .race-cards-container { 
-            display: flex; overflow-x: auto; 
-            scroll-snap-type: x mandatory; scrollbar-width: none; 
-            -ms-overflow-style: none;
-        }
+        .slider-wrapper { display: none; width: 100%; margin-bottom: 10px; overflow: hidden; }
+        .race-cards-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
         .race-cards-container::-webkit-scrollbar { display: none; }
+        .race-card { min-width: 100%; padding: 0 20px; scroll-snap-align: center; box-sizing: border-box; }
+        .result-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 68, 0, 0.2); border-radius: 15px; padding: 12px; text-align: left; }
+        .res-item { margin-bottom: 5px; border-left: 2px solid var(--accent); padding-left: 10px; }
+        .res-item strong { display: block; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; }
+        .res-item span { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.1; }
 
-        .race-card { min-width: 100%; padding: 0 15px; scroll-snap-align: center; }
+        .dots { display: none; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .dot { width: 8px; height: 8px; background: rgba(255,68,0,0.2); border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
 
-        .result-content { 
-            background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid rgba(255, 68, 0, 0.2); 
-            border-radius: 15px; padding: 12px; 
-            text-align: left; 
-        }
-
-        .res-item { 
-            margin-bottom: 5px; 
-            border-left: 2px solid var(--accent); 
-            padding-left: 10px; display: block; 
-        }
-
-        .res-item strong { 
-            display: block; font-size: 0.6rem; 
-            color: var(--accent); text-transform: uppercase; 
-            letter-spacing: 1px;
-        }
-
-        .res-item span { 
-            font-size: 0.95rem; font-weight: 700; 
-            color: #fff; display: block; line-height: 1.1;
-        }
-
-        .dots { display: none; justify-content: center; gap: 10px; margin: 10px 0; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.3s ease; }
-        .dot.active { background: var(--accent); transform: scale(1.2); box-shadow: 0 0 10px var(--accent); }
-
-        /* Der Haupt-Button bleibt optisch gleich */
         #genBtn { 
-            background: #111; border: 1px solid var(--accent); 
-            color: var(--accent); padding: 16px; border-radius: 12px; 
-            font-family: 'Orbitron'; font-weight: 900; 
-            width: 85%; margin: 10px auto; cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 1px;
+            width: 80%; max-width: 280px; padding: 15px; background: var(--accent); 
+            border: none; border-radius: 12px; color: #000; font-family: 'Orbitron'; 
+            font-weight: 900; font-size: 0.9rem; cursor: pointer; transition: 0.3s; margin: 10px auto;
         }
-
-        #genBtn:active { transform: scale(0.98); background: #1a1a1a; }
-
-        .status { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); margin-bottom: 5px; }
+        #genBtn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -188,71 +99,32 @@
             <button class="group-btn" onclick="selectGroup('retro', this)">Retroracing</button>
             <button class="group-btn" onclick="selectGroup('formel', this)">Formelsport</button>
             <button class="group-btn" onclick="selectGroup('gt', this)">GT & Prototypen</button>
-            <button class="group-btn" onclick="selectGroup('touren', this)">Tourenwagen</button>
-            <button class="group-btn" onclick="selectGroup('spezial', this)">Kart & Spezial</button>
+            <button class="group-btn" onclick="selectGroup('touren', this)">Tourenwagen & NASCAR</button>
+            <button class="group-btn" onclick="selectGroup('spezial', this)">Karts & Trucks</button>
         </div>
 
-        <div id="resultHeader" style="display: none; padding: 0 25px; margin-bottom: 15px; width: 100%; flex-direction: column; align-items: center; justify-content: center;">
-    <div id="activeCategoryDisplay" class="group-btn active" style="margin-bottom: 8px; cursor: default; border-color: var(--accent); width: 100%; max-width: 280px;">KATEGORIE</div>
-    <button onclick="goBack()" style="width: 100%; max-width: 280px; padding: 10px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); color: #aaa; background: rgba(255,255,255,0.05); font-family: 'Orbitron'; border-radius: 8px; cursor: pointer;">← ANDERE KATEGORIE WÄHLEN</button>
-</div>
+        <div id="resultHeader">
+            <div id="activeCategoryDisplay" class="group-btn active" style="margin-bottom: 8px; cursor: default;">KATEGORIE</div>
+            <button onclick="goBack()" style="width: 100%; max-width: 280px; padding: 10px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2); color: #888; background: transparent; font-family: 'Orbitron'; border-radius: 10px; cursor: pointer;">← ANDERE KATEGORIE WÄHLEN</button>
+        </div>
 
         <div class="slider-wrapper" id="wrapper">
             <div class="race-cards-container" id="slider"></div>
         </div>
+        <div class="dots" id="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
         
-        <div class="dots" id="dots">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-        
-        <button id="genBtn">START GENERIERUNG</button>
+        <button id="genBtn" onclick="generateRaces()">START GENERIERUNG</button>
     </div>
 </div>
 
 <script>
-    const db = {
-        
-        cars: [
-            {n:"Aussie Racing Camaro",y:"2019",c:"ARC",g:"touren"},{n:"Porsche 911 GT3 Cup 3.8",y:"2016",c:"Carrera Cup",g:"touren"},{n:"Porsche 911 GT3 Cup 4.0",y:"2019",c:"Carrera Cup",g:"touren"},{n:"Caterham 620R",y:"2013",c:"Caterham 620R",g:"spezial"},{n:"Caterham Academy",y:"2015",c:"Caterham Academy",g:"spezial"},{n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"spezial"},{n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},{n:"Chevrolet Chevette",y:"2011",c:"Copa Classic B",g:"retro"},{n:"Fiat Uno Classic B",y:"2011",c:"Copa Classic B",g:"retro"},{n:"MINI Cooper S 1965 B",y:"2011",c:"Copa Classic B",g:"retro"},{n:"Puma GTE",y:"2011",c:"Copa Classic B",g:"retro"},{n:"Volkswagen Gol Classic B",y:"2011",c:"Copa Classic B",g:"retro"},{n:"Volkswagen Passat Classic B",y:"2011",c:"Copa Classic B",g:"retro"},{n:"Puma GTB",y:"2011",c:"Copa Classic FL",g:"retro"},{n:"Volkswagen Fusca Classic FL",y:"2011",c:"Copa Classic FL",g:"retro"},{n:"Volkswagen Gol Classic FL",y:"2011",c:"Copa Classic FL",g:"retro"},{n:"Volkswagen Passat Classic FL",y:"2011",c:"Copa Classic FL",g:"retro"},{n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"spezial"},{n:"Chevrolet Montana",y:"2010",c:"Copa Montana",g:"touren"},{n:"IVECO Stralis",y:"2017",c:"Copa Truck",g:"touren"},{n:"MAN TGX",y:"2017",c:"Copa Truck",g:"touren"},{n:"Mercedes-Benz Actros-2651",y:"2017",c:"Copa Truck",g:"touren"},{n:"Vulkan Truck",y:"2017",c:"Copa Truck",g:"touren"},{n:"Volkswagen Constellation",y:"2017",c:"Copa Truck",g:"touren"},{n:"Fiat Uno",y:"1995",c:"Copa Uno",g:"spezial"},{n:"Cadillac DPi-V.R",y:"2018",c:"DPi",g:"gt"},{n:"Lola T95/00 Ford-Cosworth",y:"1995",c:"Formula USA Gen 1",g:"formel"},{n:"Lola T95/00 Mercedes-Benz",y:"1995",c:"Formula USA Gen 1",g:"formel"},{n:"Reynard 95i Ford-Cosworth",y:"1995",c:"Formula USA Gen 1",g:"formel"},{n:"Reynard 95i Honda",y:"1995",c:"Formula USA Gen 1",g:"formel"},{n:"Reynard 95i Mercedes-Benz",y:"1995",c:"Formula USA Gen 1",g:"formel"},{n:"Lola T98/00 Ford-Cosworth",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Reynard 98i Ford-Cosworth",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Reynard 98i Honda",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Reynard 98i Mercedes-Benz",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Reynard 98i Toyota",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Swift 009c Ford-Cosworth",y:"1998",c:"Formula USA Gen 2",g:"formel"},{n:"Lola B2K/00 Ford-Cosworth",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Lola B2K/00 Mercedes-Benz",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Lola B2K/00 Toyota",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Reynard 2Ki Ford-Cosworth",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Reynard 2Ki Honda",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Reynard 2Ki Mercedes-Benz",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"Reynard 2Ki Toyota",y:"2000",c:"Formula USA Gen 3",g:"formel"},{n:"F301",y:"2001",c:"Formula 3 Brazil",g:"formel"},{n:"F309",y:"2009",c:"Formula 3 Brazil",g:"formel"},{n:"Formula Classic Gen1 Model1",y:"1986",c:"Formula Classic Gen 1",g:"retro"},{n:"Formula Classic Gen1 Model2",y:"1986",c:"Formula Classic Gen 1",g:"retro"},{n:"Lotus 98T",y:"1986",c:"Formula Classic Gen 1",g:"retro"},{n:"Formula Classic Gen2 Model1",y:"1988",c:"Formula Classic Gen 2",g:"retro"},{n:"Formula Classic Gen2 Model2",y:"1988",c:"Formula Classic Gen 2",g:"retro"},{n:"Formula Classic Gen2 Model3",y:"1988",c:"Formula Classic Gen 2",g:"retro"},{n:"McLaren MP4/4",y:"1988",c:"Formula Classic Gen 2",g:"retro"},{n:"Formula Classic Gen3 Model1",y:"1990",c:"Formula Classic Gen 3",g:"retro"},{n:"Formula Classic Gen3 Model2",y:"1990",c:"Formula Classic Gen 3",g:"retro"},{n:"Formula Classic Gen3 Model3",y:"1990",c:"Formula Classic Gen 3",g:"retro"},{n:"Formula Classic Gen3 Model4",y:"1990",c:"Formula Classic Gen 3",g:"retro"},{n:"McLaren MP4/5B",y:"1990",c:"Formula Classic Gen 3",g:"retro"},{n:"Formula Classic Gen4 Model1",y:"1991",c:"Formula Classic Gen 4",g:"retro"},{n:"Formula Classic Gen4 Model2",y:"1991",c:"Formula Classic Gen 4",g:"retro"},{n:"Formula Classic Gen4 Model3",y:"1991",c:"Formula Classic Gen 4",g:"retro"},{n:"McLaren MP4/6",y:"1991",c:"Formula Classic Gen 4",g:"retro"},{n:"Formula HiTech Gen1 Model1",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},{n:"Formula HiTech Gen1 Model2",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},{n:"Formula HiTech Gen1 Model3",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},{n:"Formula HiTech Gen1 Model4",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},{n:"Formula HiTech Gen2 Model1",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},{n:"Formula HiTech Gen2 Model2",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},{n:"Formula HiTech Gen2 Model3",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},{n:"McLaren MP4/7A",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},{n:"McLaren MP4/8",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},{n:"Formula Dirt",y:"2014",c:"Formula Dirt",g:"formel"},{n:"Formula Junior",y:"1962",c:"Formula Junior",g:"formel"},{n:"Formula V8 Gen3",y:"2011",c:"Formula V8 Gen 3",g:"formel"},{n:"Brabham BT44",y:"1974",c:"Formula Retro Gen 1",g:"retro"},{n:"Formula Retro V12",y:"1974",c:"Formula Retro Gen 1",g:"retro"},{n:"Formula Retro V8",y:"1974",c:"Formula Retro Gen 1",g:"retro"},{n:"Lotus Type 72E",y:"1974",c:"Formula Retro Gen 1",g:"retro"},{n:"McLaren M23",y:"1974",c:"Formula Retro Gen 1",g:"retro"},{n:"Brabham BT46B",y:"1978",c:"Formula Retro Gen 2",g:"retro"},{n:"Brabham BT49",y:"1979",c:"Formula Retro Gen 2",g:"retro"},{n:"Formula Retro Gen2",y:"1978",c:"Formula Retro Gen 2",g:"retro"},{n:"Lotus 79",y:"1978",c:"Formula Retro Gen 2",g:"retro"},{n:"Brabham BT52",y:"1983",c:"Formula Retro Gen 3",g:"retro"},{n:"Formula Retro Gen3 DFY",y:"1983",c:"Formula Retro Gen 3",g:"retro"},{n:"Formula Retro Gen3 Turbo",y:"1983",c:"Formula Retro Gen 3",g:"retro"},{n:"McLaren MP4/1C",y:"1983",c:"Formula Retro Gen 3",g:"retro"},{n:"Formula Ultimate Hybrid Gen2",y:"2019",c:"Formula Hybrid Gen 2",g:"formel"},{n:"Formula Ultimate Hybrid Gen3",y:"2022",c:"Formula Hybrid Gen 3",g:"formel"},{n:"Formula USA 2023",y:"2023",c:"Formula USA 2023",g:"formel"},{n:"Formula V10 Gen1",y:"1997",c:"Formula V10 Gen 1",g:"formel"},{n:"McLaren MP4/12",y:"1997",c:"Formula V10 Gen 1",g:"formel"},{n:"Formula V10 Gen2",y:"2000",c:"Formula V10 Gen 2",g:"formel"},{n:"Formula V12",y:"1995",c:"Formula V12",g:"formel"},{n:"Formula Vintage Gen1 Model1",y:"1967",c:"Formula Vintage Gen 1",g:"retro"},{n:"Formula Vintage Gen1 Model2",y:"1967",c:"Formula Vintage Gen 1",g:"retro"},{n:"Brabham BT26A",y:"1969",c:"Formula Vintage Gen 2",g:"retro"},{n:"Formula Vintage Gen2 Model1",y:"1969",c:"Formula Vintage Gen 2",g:"retro"},{n:"Formula Vintage Gen2 Model2",y:"1969",c:"Formula Vintage Gen 2",g:"retro"},{n:"Lotus Type 49C",y:"1970",c:"Formula Vintage Gen 2",g:"retro"},{n:"Fórmula Inter MG15",y:"2015",c:"Formula Inter",g:"formel"},{n:"Formula Vee Gen1",y:"2011",c:"Formula Vee Brazil Gen 1",g:"formel"},{n:"Formula Vee Gen1 Fin",y:"2019",c:"Formula Vee Brazil Gen 1",g:"formel"},{n:"Formula Vee Gen2",y:"2025",c:"Formula Vee Brazil Gen 2",g:"formel"},{n:"Formula Trainer",y:"2015",c:"Formula Trainer",g:"formel"},{n:"Formula Trainer Advanced",y:"2015",c:"Formula Trainer Advanced",g:"formel"},{n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"spezial"},{n:"Ginetta G55",y:"2011",c:"Ginetta G55 Supercup",g:"gt"},{n:"Audi V8 quattro DTM",y:"",c:"Group A",g:"retro"},{n:"BMW M3 Sport Evo GrA",y:"1992",c:"Group A",g:"retro"},{n:"Mercedes-Benz 190E EVO 2 DTM",y:"1992",c:"Group A",g:"retro"},{n:"Chevrolet GTP",y:"1988",c:"Group C",g:"retro"},{n:"Nissan R89C",y:"1989",c:"Group C",g:"retro"},{n:"Porsche 962C",y:"1987",c:"Group C",g:"retro"},{n:"Sauber Mercedes C9",y:"1989",c:"Group C",g:"retro"},{n:"Chevrolet Corvette C3.R",y:"1971",c:"GT Classic",g:"retro"},{n:"Chevrolet Corvette C3.R Convertible",y:"1971",c:"GT Classic",g:"retro"},{n:"Porsche 911 RSR",y:"1974",c:"GT Classic",g:"retro"},{n:"Ginetta G55 GT3",y:"2011",c:"GT Open",g:"gt"},{n:"Ultima GTR Race",y:"2006",c:"GT Open",g:"gt"},{n:"McLaren F1 GTR",y:"1997",c:"GT1",g:"gt"},{n:"Mercedes-Benz CLK LM",y:"1998",c:"GT1",g:"gt"},{n:"Nissan R390 GT1",y:"1997",c:"GT1",g:"gt"},{n:"Porsche 911 GT1-98",y:"1998",c:"GT1",g:"gt"},{n:"Aston Martin DBR9",y:"2005",c:"GT1 2005",g:"gt"},{n:"Chevrolet Corvette C5-R",y:"2005",c:"GT1 2005",g:"gt"},{n:"Dodge Viper GTS-R",y:"2005",c:"GT1 2005",g:"gt"},{n:"Lamborghini Murcielago R-GT",y:"2004",c:"GT1 2005",g:"gt"},{n:"Maserati MC12 GT1",y:"2005",c:"GT1 2005",g:"gt"},{n:"Milano GT36",y:"2005",c:"GT2 2005",g:"gt"},{n:"Porsche 996 GT3 RSR",y:"2005",c:"GT2 2005",g:"gt"},{n:"Audi R8 LMS GT3",y:"",c:"GT3",g:"gt"},{n:"BMW M6 GT3",y:"2017",c:"GT3",g:"gt"},{n:"McLaren 720S",y:"2019",c:"GT3",g:"gt"},{n:"Mercedes-AMG GT3",y:"2015",c:"GT3",g:"gt"},{n:"Nissan GT-R Nismo GT3",y:"2017",c:"GT3",g:"gt"},{n:"Porsche 911 GT3 R",y:"2018",c:"GT3",g:"gt"},{n:"Aston Martin Vantage GT3 EVO",y:"",c:"GT3 Gen 2",g:"gt"},{n:"Audi R8 LMS GT3 evo II",y:"",c:"GT3 Gen 2",g:"gt"},{n:"BMW M4 GT3",y:"2022",c:"GT3 Gen 2",g:"gt"},{n:"Chevrolet Corvette Z06 GT3.R",y:"",c:"GT3 Gen 2",g:"gt"},{n:"Lamborghini Huracan GT3 EVO2",y:"",c:"GT3 Gen 2",g:"gt"},{n:"McLaren 720S GT3 EVO",y:"2023",c:"GT3 Gen 2",g:"gt"},{n:"Mercedes-AMG GT3 EVO",y:"2023",c:"GT3 Gen 2",g:"gt"},{n:"Porsche 992 GT3-R",y:"2023",c:"GT3 Gen 2",g:"gt"},{n:"Alpine A110 GT4 EVO",y:"",c:"GT4",g:"gt"},{n:"Aston Martin Vantage GT4 EVO",y:"",c:"GT4",g:"gt"},{n:"Audi R8 LMS GT4",y:"",c:"GT4",g:"gt"},{n:"BMW M4 GT4",y:"2018",c:"GT4",g:"gt"},{n:"Chevrolet Camaro GT4.R",y:"2017",c:"GT4",g:"gt"},{n:"Ginetta G55 GT4",y:"2012",c:"GT4",g:"gt"},{n:"McLaren 570S",y:"2016",c:"GT4",g:"gt"},{n:"Mercedes-AMG GT4",y:"2019",c:"GT4",g:"gt"},{n:"Porsche Cayman GT4 Clubsport MR",y:"2016",c:"GT4",g:"gt"},{n:"Ginetta G40",y:"2011",c:"GT5",g:"spezial"},{n:"Puma P052",y:"2017",c:"GT5",g:"spezial"},{n:"Aston Martin Vantage GTE",y:"",c:"GTE",g:"gt"},{n:"BMW M8 GTE",y:"2017",c:"GTE",g:"gt"},{n:"Chevrolet Corvette C8.R",y:"2020",c:"GTE",g:"gt"},{n:"Porsche 911 RSR-19",y:"2019",c:"GTE",g:"gt"},{n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"spezial"},{n:"Volkswagen Fusca 1 Hot Cars",y:"1983",c:"Hot Cars",g:"retro"},{n:"Volkswagen Fusca 2 Hot Cars",y:"1983",c:"Hot Cars",g:"retro"},{n:"Volkswagen Gol Hot Cars",y:"1983",c:"Hot Cars",g:"retro"},{n:"Volkswagen Passat Hot Cars",y:"1983",c:"Hot Cars",g:"retro"},{n:"Aston Martin Valkyrie",y:"",c:"Hypercars",g:"gt"},{n:"Brabham BT62",y:"2022",c:"Hypercars",g:"gt"},{n:"Lamborghini Veneno Roadster",y:"",c:"Hypercars",g:"gt"},{n:"Lamborghini Revuelto",y:"",c:"Hypercars",g:"gt"},{n:"McLaren Senna",y:"2022",c:"Hypercars",g:"gt"},{n:"MINI Cooper",y:"2014",c:"JCW",g:"touren"},{n:"Kartcross",y:"2016",c:"Kartcross",g:"spezial"},{n:"Kart 2-Stroke 125cc Direct",y:"2016",c:"Karting 2T 125cc",g:"spezial"},{n:"Kart 4-Stroke Race",y:"2016",c:"Karting 4T Race",g:"spezial"},{n:"Kart 4-Stroke Rental",y:"2016",c:"Karting 4T Rental",g:"spezial"},{n:"Kart 2-Stroke 125cc Shifter",y:"2016",c:"Karting 2T Shifter",g:"spezial"},{n:"Mitsubishi Lancer R",y:"2007",c:"Lancer Cup",g:"touren"},{n:"Mitsubishi Lancer RS",y:"2007",c:"Lancer Cup",g:"touren"},{n:"Ligier JS2 R",y:"",c:"Ligier European Series",g:"gt"},{n:"Ligier JS P4",y:"",c:"Ligier European Series",g:"gt"},{n:"Alpine A424",y:"",c:"LMDh/GTP",g:"gt"},{n:"Aston Martin Valkyrie Hypercar",y:"",c:"LMDh/GTP",g:"gt"},{n:"BMW M Hybrid V8",y:"2023",c:"LMDh/GTP",g:"gt"},{n:"Cadillac V-Series.R",y:"2023",c:"LMDh/GTP",g:"gt"},{n:"Lamborghini SC63",y:"",c:"LMDh/GTP",g:"gt"},{n:"Porsche 963",y:"2023",c:"LMDh/GTP",g:"gt"},{n:"Audi R8 LMP1",y:"2005",c:"LMP1 2005",g:"gt"},{n:"Courage C60 Hybrid",y:"2005",c:"LMP1 2005",g:"gt"},{n:"Dallara SP1",y:"2005",c:"LMP1 2005",g:"gt"},{n:"Lola B05/40 Turbo",y:"2005",c:"LMP2 2005",g:"gt"},{n:"Lola B05/40 V8",y:"2005",c:"LMP2 2005",g:"gt"},{n:"Ligier JS P217",y:"",c:"LMP2 Gen 1",g:"gt"},{n:"Oreca 07",y:"",c:"LMP2 Gen 1",g:"gt"},{n:"Ligier JS P217 (2)",y:"",c:"LMP2 Gen 2",g:"gt"},{n:"Oreca 07 (2)",y:"",c:"LMP2 Gen 2",g:"gt"},{n:"BMW M1 Procar",y:"1979",c:"M1 Procar",g:"retro"},{n:"Chevrolet Opala",y:"2014",c:"Old Stock Race",g:"retro"},{n:"Ginetta G58",y:"2018",c:"P1 Gen 1",g:"gt"},{n:"Metalmoro AJR Judd",y:"2017",c:"P1 Gen 1",g:"gt"},{n:"Metalmoro AJR Nissan",y:"2017",c:"P1 Gen 1",g:"gt"},{n:"Metalmoro AJR Honda",y:"2017",c:"P1 Gen 1",g:"gt"},{n:"Metalmoro AJR Chevrolet",y:"2017",c:"P1 Gen 1",g:"gt"},{n:"Ligier JS P320",y:"",c:"P1 Gen 2",g:"gt"},{n:"Metalmoro AJR Gen2 Chevrolet",y:"2023",c:"P1 Gen 2",g:"gt"},{n:"Metalmoro AJR Gen2 Honda",y:"2023",c:"P1 Gen 2",g:"gt"},{n:"Metalmoro AJR Gen2 Nissan",y:"2023",c:"P1 Gen 2",g:"gt"},{n:"Ginetta G58 Gen2",y:"2023",c:"P1 Gen 2",g:"gt"},{n:"Sigma P1 G5",y:"2023",c:"P1 Gen 2",g:"gt"},{n:"Metalmoro MRX Duratec P2",y:"2018",c:"P2",g:"gt"},{n:"Sigma P1",y:"2017",c:"P2",g:"gt"},{n:"Metalmoro MRX Honda P3",y:"2009",c:"P3",g:"gt"},{n:"Metalmoro MRX Duratec P3",y:"2009",c:"P3",g:"gt"},{n:"Roco 001",y:"2018",c:"P3",g:"gt"},{n:"MCR S2000",y:"2013",c:"P4",g:"gt"},{n:"Metalmoro MRX Duratec P4",y:"2009",c:"P4",g:"gt"},{n:"Citroen DS3RX",y:"2016",c:"Rallycross",g:"spezial"},{n:"Mini Countryman R60 RX",y:"2016",c:"Rallycross",g:"spezial"},{n:"Mitsubishi Lancer Evo10 RX",y:"2013",c:"Rallycross",g:"spezial"},{n:"Volkswagen Polo RX",y:"2016",c:"Rallycross",g:"spezial"},{n:"Sprint Race",y:"2016",c:"Sprint Race",g:"touren"},{n:"Chevrolet Opala Stock Cars 1979",y:"1979",c:"Stock Car Brasil 1979",g:"touren"},{n:"Chevrolet Opala Stock Cars 1986",y:"1986",c:"Stock Car Brasil 1986",g:"retro"},{n:"Chevrolet Omega Stock Car 1999",y:"1999",c:"Stock Car Brasil 1999",g:"retro"},{n:"Chevrolet Cruze Stock Car 2019",y:"2019",c:"Stock Car Brasil 2019",g:"touren"},{n:"Chevrolet Cruze Stock Car 2020",y:"2020",c:"Stock Car Brasil 2020",g:"touren"},{n:"Toyota Corolla Stock Car 2020",y:"2020",c:"Stock Car Brasil 2020",g:"touren"},{n:"Chevrolet Cruze Stock Car 2021",y:"2021",c:"Stock Car Brasil 2021",g:"touren"},{n:"Toyota Corolla Stock Car 2021",y:"2021",c:"Stock Car Brasil 2021",g:"touren"},{n:"Chevrolet Cruze Stock Car 2022",y:"2022",c:"Stock Car Pro Series 2022",g:"touren"},{n:"Toyota Corolla Stock Car 2022",y:"2022",c:"Stock Car Pro Series 2022",g:"touren"},{n:"Chevrolet Cruze Stock Car 2023",y:"2023",c:"Stock Car Pro Series 2023",g:"touren"},{n:"Toyota Corolla Stock Car 2023",y:"2023",c:"Stock Car Pro Series 2023",g:"touren"},{n:"Chevrolet Cruze Stock Car 2024",y:"2024",c:"Stock Car Pro Series 2024",g:"touren"},{n:"Toyota Corolla Stock Car 2024",y:"2024",c:"Stock Car Pro Series 2024",g:"touren"},{n:"Stock USA Gen1",y:"",c:"Stock USA Gen 1",g:"spezial"},{n:"Stock USA Gen2",y:"",c:"Stock USA Gen 2",g:"spezial"},{n:"Stock USA Gen3",y:"",c:"Stock USA Gen 3",g:"spezial"},{n:"Stock USA Gen3 LM",y:"",c:"Stock USA Gen 3 LM",g:"spezial"},{n:"Chevrolet Camaro SS",y:"2019",c:"Street Cars",g:"spezial"},{n:"Lamborghini Huracan Super Trofeo EVO2",y:"",c:"Super Trofeo",g:"gt"},{n:"Lamborghini Diablo SV-R Super Trofeo",y:"",c:"Diablo Super Trofeo",g:"gt"},{n:"Audi R8 V10 GT",y:"",c:"Supercars",g:"gt"},{n:"Chevrolet Corvette C8 Z06",y:"2022",c:"Supercars",g:"gt"},{n:"Dodge Viper ACR",y:"",c:"Supercars",g:"gt"},{n:"Maserati GT2 Stradale",y:"",c:"Supercars",g:"gt"},{n:"McLaren F1 LM",y:"1995",c:"Supercars",g:"gt"},{n:"Ultima GTR (640)",y:"2000",c:"Supercars",g:"gt"},{n:"Super Kart 250cc",y:"2019",c:"Super Kart",g:"spezial"},{n:"Super Trophy Truck",y:"",c:"Super Trophy Trucks",g:"touren"},{n:"Super V8 (Gen2 ZB)",y:"2018",c:"Super V8",g:"touren"},{n:"Volkswagen Polo",y:"2021",c:"TSI Cup",g:"spezial"},{n:"Volkswagen Polo GTS",y:"2021",c:"TSI Cup",g:"spezial"},{n:"Volkswagen Virtus",y:"2021",c:"TSI Cup",g:"spezial"},{n:"Volkswagen Virtus GTS",y:"2021",c:"TSI Cup",g:"spezial"},{n:"BMW 2002 Turbo",y:"1973",c:"Vintage Touring Cars Tier 1",g:"retro"},{n:"Chevrolet Corvette C3",y:"1973",c:"Vintage Touring Cars Tier 1",g:"retro"},{n:"Lamborghini Miura SV",y:"",c:"Vintage Touring Cars Tier 1",g:"retro"},{n:"Lotus 23",y:"1962",c:"Vintage Touring Cars Tier 2",g:"retro"},{n:"MINI Cooper S",y:"1965",c:"Vintage Touring Cars Tier 2",g:"retro"}
-        ],
-        
-  tracks: [
-            {t:"Adelaide",l:"Adelaide Historic 1988",c:"Australia",gr:"Historic"},{t:"Adelaide",l:"Adelaide",c:"Australia",gr:"Grade 3"},{t:"Adelaide",l:"Adelaide STT",c:"Australia",gr:"Grade 3"},{t:"Ascurra",l:"Ascurra Dirt",c:"Brazil",gr:"Off-road"},{t:"Ascurra",l:"Ascurra RX",c:"Brazil",gr:"Off-road"},{t:"Azure Circuit (Monaco)",l:"Azure Circuit",c:"Monaco",gr:"Grade 1"},{t:"Barcelona",l:"Barcelona 1991",c:"Spain",gr:"Historic"},{t:"Barcelona",l:"Circuit de Barcelona-Catalunya GP",c:"Spain",gr:"Grade 1"},{t:"Barcelona",l:"Circuit de Barcelona-Catalunya GP (No Chicane)",c:"Spain",gr:"Grade 1"},{t:"Barcelona",l:"Circuit de Barcelona-Catalunya National",c:"Spain",gr:"Grade 1"},{t:"Barcelona",l:"Circuit de Barcelona-Catalunya RX",c:"Spain",gr:"Off-road"},{t:"Bathurst",l:"Bathurst 1983",c:"Australia",gr:"Historic"},{t:"Bathurst",l:"Bathurst 2020",c:"Australia",gr:"Grade 3"},{t:"Brands Hatch",l:"Brands Hatch GP",c:"England",gr:"Grade 2"},{t:"Brands Hatch",l:"Brands Hatch Indy",c:"England",gr:"Grade 3"},{t:"Brasilia",l:"Brasilia Full",c:"Brazil",gr:"Grade 3"},{t:"Brasilia",l:"Brasilia Outer",c:"Brazil",gr:"Grade 3"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.12",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.15",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.6",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.6S",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.7",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.8",c:"Argentina",gr:"Grade 1"},{t:"Buenos Aires",l:"Buenos Aires Circuito No.9",c:"Argentina",gr:"Grade 1"},{t:"Buskerud",l:"Buskerud Kart Long",c:"Norway",gr:"Kart"},{t:"Buskerud",l:"Buskerud Kart",c:"Norway",gr:"Kart"},{t:"Cadwell Park",l:"Cadwell Park",c:"England",gr:"Grade 3"},{t:"Campo Grande",l:"Campo Grande",c:"Brazil",gr:"Grade 3"},{t:"Cascavel",l:"Cascavel",c:"Brazil",gr:"Grade 3"},{t:"Cleveland",l:"Cleveland GP",c:"USA",gr:"Grade 3"},{t:"Cleveland",l:"Cleveland STT",c:"USA",gr:"Grade 3"},{t:"Córdoba",l:"Córdoba TC",c:"Argentina",gr:"Grade 3"},{t:"Córdoba",l:"Córdoba No.4",c:"Argentina",gr:"Grade 3"},{t:"Córdoba",l:"Córdoba No.2",c:"Argentina",gr:"Grade 3"},{t:"Curitiba",l:"Curitiba",c:"Brazil",gr:"Grade 3"},{t:"Curitiba",l:"Curitiba Outer",c:"Brazil",gr:"Grade 3"},{t:"Curvelo",l:"Curvelo Long",c:"Brazil",gr:"Grade 2"},{t:"Curvelo",l:"Curvelo Short",c:"Brazil",gr:"Grade 3"},{t:"Daytona",l:"Daytona Nascar Tri-Oval",c:"USA",gr:"Grade 3"},{t:"Daytona",l:"Daytona Sports Car Course",c:"USA",gr:"Grade 3"},{t:"Daytona",l:"Daytona Nascar Road Course",c:"USA",gr:"Grade 3"},{t:"Donington Park",l:"Donington GP",c:"England",gr:"Grade 2"},{t:"Donington Park",l:"Donington National",c:"England",gr:"Grade 3"},{t:"Cascais (Estoril)",l:"Cascais Historic 1988",c:"Portugal",gr:"Historic"},{t:"Cascais (Estoril)",l:"Cascais",c:"Portugal",gr:"Grade 1"},{t:"Cascais (Estoril)",l:"Cascais Alternate",c:"Portugal",gr:"Grade 3"},{t:"Fontana",l:"Auto Club Speedway Oval",c:"USA",gr:"Grade 2"},{t:"Fontana",l:"Auto Club Speedway Sports Car Course",c:"USA",gr:"Grade 2"},{t:"Foz",l:"Foz",c:"Brazil",gr:"Off-road"},{t:"Galeao Airport",l:"Galeao Airport",c:"Brazil",gr:"Grade 3"},{t:"Gateway",l:"WWT Raceway Oval",c:"USA",gr:"Grade 2"},{t:"Gateway",l:"WWT Raceway Road Course (Short)",c:"USA",gr:"Grade 2"},{t:"Gateway",l:"WWT Raceway Road Course (Long)",c:"USA",gr:"Grade 2"},{t:"Goiânia",l:"Goiânia",c:"Brazil",gr:"Grade 4"},{t:"Goiânia",l:"Goiânia External",c:"Brazil",gr:"Grade 3"},{t:"Goiânia",l:"Goiânia Short",c:"Brazil",gr:"Grade 3"},{t:"Granja Viana",l:"Copa São Paulo Stage 1",c:"Brazil",gr:"Kart"},{t:"Granja Viana",l:"Copa São Paulo Kart Stage 2",c:"Brazil",gr:"Kart"},{t:"Granja Viana",l:"Granja Viana Kart 101",c:"Brazil",gr:"Kart"},{t:"Granja Viana",l:"Granja Viana Kart 102",c:"Brazil",gr:"Kart"},{t:"Granja Viana",l:"Granja Viana Kart 121",c:"Brazil",gr:"Kart"},{t:"Guaporé",l:"Guaporé",c:"Brazil",gr:"Grade 3"},{t:"Guaporé",l:"Guaporé STT",c:"Brazil",gr:"Grade 3"},{t:"Hockenheimring",l:"Hockenheim Historic 1977",c:"Germany",gr:"Historic"},{t:"Hockenheimring",l:"Hockenheim Historic 1988",c:"Germany",gr:"Historic"},{t:"Hockenheimring",l:"Hockenheim Historic 1988 Short",c:"Germany",gr:"Historic"},{t:"Hockenheimring",l:"Hockenheim Historic 2001",c:"Germany",gr:"Historic"},{t:"Hockenheimring",l:"Hockenheim",c:"Germany",gr:"Grade 1"},{t:"Hockenheimring",l:"Hockenheim National",c:"Germany",gr:"Grade 3"},{t:"Hockenheimring",l:"Hockenheim RX",c:"Germany",gr:"Off-road"},{t:"Hockenheimring",l:"Hockenheim Short A",c:"Germany",gr:"Grade 3"},{t:"Hockenheimring",l:"Hockenheim STT",c:"Germany",gr:"Grade 3"},{t:"Hockenheimring",l:"Hockenheim Short B",c:"Germany",gr:"Grade 3"},{t:"Ibarra",l:"Autódromo Yahuarcocha",c:"Ecuador",gr:"Grade 4"},{t:"Ibarra",l:"Autódromo Yahuarcocha Reverse",c:"Ecuador",gr:"Grade 4"},{t:"Ibarra",l:"Autódromo Yahuarcocha STT",c:"Ecuador",gr:"Grade 4"},{t:"Imola",l:"Imola",c:"Italy",gr:"Grade 1"},{t:"Imola",l:"Imola Historic 2001",c:"Italy",gr:"Historic"},{t:"Imola",l:"Imola Historic 1972",c:"Italy",gr:"Historic"},{t:"Imola",l:"Imola Historic 1988",c:"Italy",gr:"Historic"},{t:"Indianapolis",l:"Indianapolis Motor Speedway Oval",c:"USA",gr:"Grade 1"},{t:"Indianapolis",l:"Indianapolis Motor Speedway Road Course",c:"USA",gr:"Grade 1"},{t:"Interlagos",l:"Interlagos GP",c:"Brazil",gr:"Grade 1"},{t:"Interlagos",l:"Interlagos Kart One",c:"Brazil",gr:"Kart"},{t:"Interlagos",l:"Interlagos Kart Two",c:"Brazil",gr:"Kart"},{t:"Interlagos",l:"Interlagos Kart Three",c:"Brazil",gr:"Kart"},{t:"Interlagos",l:"Interlagos 1991",c:"Brazil",gr:"Historic"},{t:"Interlagos",l:"Interlagos 1993",c:"Brazil",gr:"Historic"},{t:"Interlagos",l:"Interlagos Historic 1976",c:"Brazil",gr:"Historic"},{t:"Interlagos",l:"Interlagos Historic 1978 Outer",c:"Brazil",gr:"Historic"},{t:"Interlagos",l:"Interlagos Stock Car Brasil",c:"Brazil",gr:"Grade 1"},{t:"Jacarepaguá",l:"Jacarepaguá Historic 2005",c:"Brazil",gr:"Historic"},{t:"Jacarepaguá",l:"Jacarepaguá Historic 2005 Oval",c:"Brazil",gr:"Historic"},{t:"Jacarepaguá",l:"Jacarepaguá Historic 2012 SCB",c:"Brazil",gr:"Historic"},{t:"Jacarepaguá",l:"Jacarepaguá Historic 2012 Short",c:"Brazil",gr:"Historic"},{t:"Jacarepaguá",l:"Jacarepaguá Historic 1988",c:"Brazil",gr:"Historic"},{t:"Jerez",l:"Jerez Historic 1988",c:"Spain",gr:"Grade 1"},{t:"Jerez",l:"Jerez Moto",c:"Spain",gr:"Grade 1"},{t:"Jerez",l:"Jerez Chicane",c:"Spain",gr:"Grade 3"},{t:"Kansai (Suzuka)",l:"Kansai Classic",c:"Japan",gr:"Historic"},{t:"Kansai (Suzuka)",l:"Kansai East",c:"Japan",gr:"Grade 3"},{t:"Kansai (Suzuka)",l:"Kansai GP",c:"Japan",gr:"Grade 1"},{t:"Kansai (Suzuka)",l:"Kansai West",c:"Japan",gr:"Grade 3"},{t:"Kyalami",l:"Kyalami",c:"South Africa",gr:"Grade 2"},{t:"Kyalami",l:"Kyalami Historic 1976",c:"South Africa",gr:"Historic"},{t:"Laguna Seca",l:"Laguna Seca 2020",c:"USA",gr:"Grade 2"},{t:"La Sarthe",l:"Le Mans 24h",c:"France",gr:"Grade 2"},{t:"La Sarthe",l:"Le Mans 24h 2005",c:"France",gr:"Grade 2"},{t:"La Sarthe",l:"Le Mans Circuit Bugatti",c:"France",gr:"Grade 2"},{t:"Londrina",l:"Londrina Short",c:"Brazil",gr:"Grade 3"},{t:"Londrina",l:"Londrina Kart One",c:"Brazil",gr:"Kart"},{t:"Londrina",l:"Londrina Kart Two",c:"Brazil",gr:"Kart"},{t:"Londrina",l:"LondrinaKart3",c:"Brazil",gr:"Kart"},{t:"Londrina",l:"Londrina Long",c:"Brazil",gr:"Grade 3"},{t:"Long Beach",l:"Long Beach",c:"USA",gr:"Grade 3"},{t:"Long Beach",l:"Long Beach STT",c:"USA",gr:"Grade 3"},{t:"Montreal",l:"Montréal Historic 1988",c:"Canada",gr:"Historic"},{t:"Montreal",l:"Montreal Historic 1991",c:"Canada",gr:"Historic"},{t:"Montreal",l:"Montréal",c:"Canada",gr:"Grade 1"},{t:"Monza",l:"Monza Historic 1971",c:"Italy",gr:"Historic"},{t:"Monza",l:"Monza Historic 1971 10k",c:"Italy",gr:"Historic"},{t:"Monza",l:"Monza Historic 1971 10k (no chicane)",c:"Italy",gr:"Historic"},{t:"Monza",l:"Monza Historic 1971 Junior",c:"Italy",gr:"Historic"},{t:"Monza",l:"Monza Historic 1991",c:"Italy",gr:"Historic"},{t:"Monza",l:"Monza",c:"Italy",gr:"Grade 1"},{t:"Monza",l:"Monza Junior",c:"Italy",gr:"Grade 3"},{t:"Monza",l:"Monza STT",c:"Italy",gr:"Grade 3"},{t:"Nürburgring",l:"Nordschleife 2020",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nordschleife 24 Hour 2020",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nordschleife 2025",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nordschleife 2025 24hr",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nordschleife Tourist 2025",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Gesamtstrecke Historic 1971",c:"Germany",gr:"Historic"},{t:"Nürburgring",l:"Nordschleife Historic 1971",c:"Germany",gr:"Historic"},{t:"Nürburgring",l:"Südscheleife Historic 1971",c:"Germany",gr:"Historic"},{t:"Nürburgring",l:"Betonschleife Historic 1971",c:"Germany",gr:"Historic"},{t:"Nürburgring",l:"Nürburgring RX",c:"Germany",gr:"Off-road"},{t:"Nürburgring",l:"Nürburgring GP 2020",c:"Germany",gr:"Grade 1"},{t:"Nürburgring",l:"Nurburgring GP 2025",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nürburgring Sprint 2020",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nürburgring Sprint S 2020",c:"Germany",gr:"Grade 3"},{t:"Nürburgring",l:"Nürburgring Veedol 2020",c:"Germany",gr:"Grade 3"},{t:"Ortona",l:"Ortona Kart One",c:"Italy",gr:"Kart"},{t:"Ortona",l:"Ortona Kart Two",c:"Italy",gr:"Kart"},{t:"Ortona",l:"Ortona Kart Three",c:"Italy",gr:"Kart"},{t:"Ortona",l:"Ortona Kart Four",c:"Italy",gr:"Kart"},{t:"Oulton Park",l:"Oulton Park International",c:"England",gr:"Grade 3"},{t:"Oulton Park",l:"Oulton Park Classic",c:"England",gr:"Historic"},{t:"Oulton Park",l:"Oulton Park Fosters",c:"England",gr:"Grade 3"},{t:"Oulton Park",l:"Oulton Park Island",c:"England",gr:"Grade 3"},{t:"Pocono",l:"Pocono Southeast Course 5",c:"USA",gr:"Grade 2"},{t:"Pocono",l:"Pocono East Course 1",c:"USA",gr:"Grade 2"},{t:"Pocono",l:"Pocono North/South Course 1 (No Chicane)",c:"USA",gr:"Grade 2"},{t:"Pocono",l:"Pocono North/South Course 1",c:"USA",gr:"Grade 2"},{t:"Pocono",l:"Pocono Oval",c:"USA",gr:"Grade 3"},{t:"Pocono",l:"Pocono North/South Course 2",c:"USA",gr:"Grade 2"},{t:"Pocono",l:"Pocono Southeast Course 1",c:"USA",gr:"Grade 2"},{t:"Road America",l:"Road America",c:"USA",gr:"Grade 2"},{t:"Road America",l:"Road America (Bend)",c:"USA",gr:"Grade 2"},{t:"Road America",l:"Road America STT",c:"USA",gr:"Grade 2"},{t:"Road Atlanta",l:"Road Atlanta",c:"USA",gr:"Grade 3"},{t:"Road Atlanta",l:"Road Atlanta 2005",c:"USA",gr:"Grade 3"},{t:"Road Atlanta",l:"Road Atlanta 2005 Short",c:"USA",gr:"Grade 3"},{t:"Road Atlanta",l:"Road Atlanta Moto",c:"USA",gr:"Grade 3"},{t:"Salvador",l:"Salvador Street Circuit",c:"Brazil",gr:"Grade 3"},{t:"Santa Cruz do Sul",l:"Santa Cruz do Sul",c:"Brazil",gr:"Grade 4"},{t:"Sebring",l:"Sebring",c:"USA",gr:"Grade 2"},{t:"Sebring",l:"Sebring Club",c:"USA",gr:"Grade 2"},{t:"Sebring",l:"Sebring School",c:"USA",gr:"Grade 2"},{t:"Sebring",l:"Sebring STT",c:"USA",gr:"Grade 2"},{t:"Silverstone",l:"Silverstone Historic 1975",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone Historic 1975 (no chicane)",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone Historic 1991",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone Historic 2001",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone International Historic 2001",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone National Historic 2001",c:"England",gr:"Historic"},{t:"Silverstone",l:"Silverstone",c:"England",gr:"Grade 1"},{t:"Silverstone",l:"Silverstone International",c:"England",gr:"Grade 3"},{t:"Silverstone",l:"Silverstone National",c:"England",gr:"Grade 3"},{t:"Snetterton",l:"Snetterton 300",c:"England",gr:"Grade 2"},{t:"Snetterton",l:"Snetterton 200",c:"England",gr:"Grade 2"},{t:"Snetterton",l:"Snetterton 100",c:"England",gr:"Grade 4"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 1970",c:"Belgium",gr:"Historic"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 1970 1000km",c:"Belgium",gr:"Historic"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 1993",c:"Belgium",gr:"Historic"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 2005",c:"Belgium",gr:"Grade 1"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 2005 EC",c:"Belgium",gr:"Grade 1"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 2020",c:"Belgium",gr:"Grade 1"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps 2022",c:"Belgium",gr:"Grade 1"},{t:"Spa-Francorchamps",l:"Spa-Francorchamps RX",c:"Belgium",gr:"Off-road"},{t:"Speedland",l:"Speedland Kart 1",c:"Brazil",gr:"Kart"},{t:"Speedland",l:"Speedland Kart 2",c:"Brazil",gr:"Kart"},{t:"Speedland",l:"Speedland Kart 3",c:"Brazil",gr:"Kart"},{t:"Speedland",l:"Speedland Kart 4",c:"Brazil",gr:"Kart"},{t:"Spielberg (Red Bull Ring)",l:"Spielberg",c:"Austria",gr:"Grade 1"},{t:"Spielberg (Red Bull Ring)",l:"Spielberg Historic 1977",c:"Austria",gr:"Historic"},{t:"Spielberg (Red Bull Ring)",l:"Spielberg Short",c:"Austria",gr:"Grade 3"},{t:"Spielberg (Red Bull Ring)",l:"Spielberg STT",c:"Austria",gr:"Grade 3"},{t:"Spielberg (Red Bull Ring)",l:"Spielberg Historic 1974",c:"Austria",gr:"Historic"},{t:"Tarumã",l:"Tarumã International",c:"Brazil",gr:"Grade 4"},{t:"Tarumã",l:"Tarumã Chicane",c:"Brazil",gr:"Grade 3"},{t:"Termas de Río Hondo",l:"Termas de Río Hondo",c:"Argentina",gr:"Grade 2"},{t:"Tykki",l:"Tykki Dirt 1",c:"Finland",gr:"Off-road"},{t:"Tykki",l:"Tykki Dirt 2",c:"Finland",gr:"Off-road"},{t:"Tykki",l:"Tykki RX",c:"Finland",gr:"Off-road"},{t:"Tykki",l:"Tykki Tarmac",c:"Finland",gr:"Off-road"},{t:"Velo Cittá",l:"Velo Cittá",c:"Brazil",gr:"Grade 3"},{t:"Velo Cittá",l:"Velo Cittá Club Day",c:"Brazil",gr:"Grade 3"},{t:"Velo Cittá",l:"Velo Cittá Track Day",c:"Brazil",gr:"Grade 3"},{t:"Velopark",l:"Velopark 2010",c:"Brazil",gr:"Grade 3"},{t:"Velopark",l:"Velopark 2017",c:"Brazil",gr:"Grade 3"},{t:"Velopark",l:"Velopark 2017 STT",c:"Brazil",gr:"Grade 3"},{t:"Virginia",l:"Virginia International Raceway Full",c:"USA",gr:"Grade 2"},{t:"Virginia",l:"Virginia International Raceway Grand",c:"USA",gr:"Grade 3"},{t:"Virginia",l:"Virginia International Raceway North",c:"USA",gr:"Grade 3"},{t:"Virginia",l:"Virginia International Raceway Patriot",c:"USA",gr:"Grade 3"},{t:"Virginia",l:"Virginia International Raceway South",c:"USA",gr:"Grade 3"},{t:"Watkins Glen",l:"Watkins Glen GP",c:"USA",gr:"Grade 2"},{t:"Watkins Glen",l:"Watkins Glen GP (Inner Loop)",c:"USA",gr:"Grade 2"},{t:"Watkins Glen",l:"Watkins Glen Short",c:"USA",gr:"Grade 2"},{t:"Watkins Glen",l:"Watkins Glen Short (Inner Loop)",c:"USA",gr:"Grade 2"},{t:"Watkins Glen",l:"Watkins Glen STT",c:"USA",gr:"Grade 2"}
-        ],
-        
-        seasons: ['Frühling', 'Sommer', 'Herbst', 'Winter'],
-        weather: ['Klar', 'Heiter', 'Wolkig', 'Bewölkt', 'Bedeckt', 'Sturm', 'Leichter Regen', 'Regen', 'Nebel mit Regen', 'Starker Nebel', 'Starknebel mit Regen', 'Diesig', 'Gewitter', 'Nebel'],
-        times: ['08:00', '02:00', '03:00', '05:00', '06:00', '07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00', '23:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '01:00', '04:00']
-    };
-    
-    // --- Logik-Steuerung ---
+    // Diese Listen sind hier fest verbaut, damit db.js sauber bleibt
+    const seasonsList = ['Frühling', 'Sommer', 'Herbst', 'Winter'];
+    const weatherList = ['Heiter', 'Bewölkt', 'Regen', 'Gewitter', 'Nebel'];
+    const timesList = ['08:00', '12:00', '16:00', '20:00', '00:00'];
+
     let currentFilter = 'all';
     let currentCategoryName = 'Alle Klassen';
-
-    function selectGroup(group, btn) {
-        currentFilter = group;
-        currentCategoryName = btn.textContent;
-        document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('status').textContent = "BEREIT FÜR: " + currentCategoryName.toUpperCase();
-    }
-
-    // Neue Funktion: Bringt dich zurück zur Auswahlansicht
-    function goBack() {
-        document.getElementById('groupSelector').style.display = 'flex';
-        document.getElementById('resultHeader').style.display = 'none';
-        document.getElementById('wrapper').style.display = 'none';
-        document.getElementById('dots').style.display = 'none';
-        document.getElementById('suggestion-num').style.display = 'none';
-        document.getElementById('pulse').style.display = 'block';
-        
-        const genBtn = document.getElementById('genBtn');
-        genBtn.style.display = 'block';
-        genBtn.textContent = 'START GENERIERUNG';
-        document.getElementById('status').textContent = "SYSTEM READY";
-    }
 
     const genBtn = document.getElementById('genBtn');
     const loader = document.getElementById('loader');
@@ -263,17 +135,35 @@
     const wrapper = document.getElementById('wrapper');
     const dotsDiv = document.getElementById('dots');
 
+    function selectGroup(group, btn) {
+        currentFilter = group;
+        currentCategoryName = btn.textContent;
+        document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        status.textContent = "BEREIT FÜR: " + currentCategoryName.toUpperCase();
+    }
+
+    function goBack() {
+        document.getElementById('groupSelector').style.display = 'flex';
+        document.getElementById('resultHeader').style.display = 'none';
+        wrapper.style.display = 'none';
+        dotsDiv.style.display = 'none';
+        sNum.style.display = 'none';
+        pulse.style.display = 'block';
+        genBtn.style.display = 'block';
+        genBtn.textContent = 'START GENERIERUNG';
+        status.textContent = "SYSTEM READY";
+    }
+
     slider.addEventListener('scroll', () => {
         const index = Math.round(slider.scrollLeft / slider.offsetWidth);
         sNum.textContent = index + 1;
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
     });
 
     async function generateRaces() {
-        // UI Umschalten beim Start
         document.getElementById('groupSelector').style.display = 'none';
-        document.getElementById('resultHeader').style.display = 'block';
+        document.getElementById('resultHeader').style.display = 'flex';
         document.getElementById('activeCategoryDisplay').textContent = currentCategoryName;
         
         genBtn.disabled = true;
@@ -284,31 +174,34 @@
         loader.style.display = "block";
         status.textContent = "BERECHNE SZENARIEN...";
 
-        await new Promise(r => setTimeout(r, 1500));
-
-        let carPool = currentFilter === 'all' ? db.cars : db.cars.filter(c => c.g === currentFilter);
-        if (carPool.length === 0) carPool = db.cars;
+        await new Promise(r => setTimeout(r, 1200));
 
         let html = "";
         for(let i=0; i<3; i++) {
+            let carPool = currentFilter === 'all' ? db.cars : db.cars.filter(c => c.g === currentFilter);
             const car = carPool[Math.floor(Math.random() * carPool.length)];
-            
-            let trackPool = db.tracks;
-            const cClass = car.c.toLowerCase();
 
-            // Intelligenter Streckenfilter
-            if (car.g === 'retro') {
-                trackPool = db.tracks.filter(t => t.gr === "Historic" || t.gr === "Grade 3");
-            } else if (cClass.includes("kart")) {
+            let trackPool = db.tracks;
+            const carClass = car.c.toLowerCase();
+
+            // Intelligente Filter-Logik
+            if (car.preferOval) {
+                trackPool = db.tracks.filter(t => t.isOval === true);
+            } else if (carClass.includes("kart")) {
                 trackPool = db.tracks.filter(t => t.gr === "Kart");
-            } else if (cClass.includes("rx") || cClass.includes("truck") || cClass.includes("dirt")) {
-                trackPool = db.tracks.filter(t => t.gr === "Off-road");
+            } else if (car.isSTT) {
+                trackPool = db.tracks.filter(t => t.isSTT === true);
             } else {
-                trackPool = db.tracks.filter(t => !["Kart", "Off-road"].includes(t.gr));
+                trackPool = db.tracks.filter(t => !t.isOval && t.gr !== "Kart" && !t.isSTT);
             }
 
             if(trackPool.length === 0) trackPool = db.tracks;
             const track = trackPool[Math.floor(Math.random() * trackPool.length)];
+
+            // Werte aus den internen Listen würfeln
+            const ssn = seasonsList[Math.floor(Math.random() * seasonsList.length)];
+            const wtr = weatherList[Math.floor(Math.random() * weatherList.length)];
+            const tme = timesList[Math.floor(Math.random() * timesList.length)];
 
             html += `
                 <div class="race-card">
@@ -318,9 +211,9 @@
                         <div class="res-item"><strong>Land</strong><span>${track.c}</span></div>
                         <div class="res-item"><strong>Strecke</strong><span>${track.t}</span></div>
                         <div class="res-item"><strong>Layout</strong><span>${track.l}</span></div>
-                        <div class="res-item"><strong>Jahreszeit</strong><span>${db.seasons[Math.floor(Math.random()*db.seasons.length)]}</span></div>
-                        <div class="res-item"><strong>Wetter</strong><span>${db.weather[Math.floor(Math.random()*db.weather.length)]}</span></div>
-                        <div class="res-item"><strong>Startzeit</strong><span>${db.times[Math.floor(Math.random()*db.times.length)]}</span></div>
+                        <div class="res-item"><strong>Jahreszeit</strong><span>${ssn}</span></div>
+                        <div class="res-item"><strong>Wetter</strong><span>${wtr}</span></div>
+                        <div class="res-item"><strong>Startzeit</strong><span>${tme}</span></div>
                     </div>
                 </div>`;
         }
@@ -333,55 +226,11 @@
         sNum.style.display = "block";
         sNum.textContent = "1";
         
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
-
         status.textContent = "SZENARIEN GELADEN";
         genBtn.disabled = false;
-        genBtn.textContent = "Vorschläge aktualisieren";
+        genBtn.textContent = "VORSCHLÄGE AKTUALISIEREN";
     }
-
-    genBtn.addEventListener('click', generateRaces);
-    
-    // PWA Service Worker Registrierung
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registriert'))
-                .catch(err => console.log('Service Worker Fehler', err));
-        });
-    }
-    
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

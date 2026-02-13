@@ -99,8 +99,7 @@ const db = {
         {n:"Formula HiTech Gen2 Model2",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},
         {n:"Formula HiTech Gen2 Model3",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},
         {n:"McLaren MP4/7A",y:"1992",c:"Formula HiTech Gen 1",g:"formel"},
-        {n:"McLaren MP4/8",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},
-        {n:"Formula Dirt",y:"2014",c:"Formula Dirt",g:"formel"},
+        {n:"McLaren MP4/8",y:"1993",c:"Formula HiTech Gen 2",g:"formel"},    
         {n:"Formula Junior",y:"1962",c:"Formula Junior",g:"formel"},
         {n:"Formula V8 Gen3",y:"2011",c:"Formula V8 Gen 3",g:"formel"},
         {n:"Formula Ultimate Hybrid Gen2",y:"2019",c:"Formula Hybrid Gen 2",g:"formel"},
@@ -271,6 +270,7 @@ const db = {
         {n:"Mini Countryman R60 RX",y:"2016",c:"Rallycross",g:"spezial"},
         {n:"Mitsubishi Lancer Evo10 RX",y:"2013",c:"Rallycross",g:"spezial"},
         {n:"Volkswagen Polo RX",y:"2016",c:"Rallycross",g:"spezial"}
+		{n:"Formula Dirt",y:"2014",c:"Rallycross",g:"spezial"},
     ],
 	
 	tracks: [
@@ -418,4 +418,5 @@ const db = {
         {t:"Zandvoort", l:"GP", c:"Niederlande", gr:"Grade 1"},
         {t:"Zolder", l:"GP", c:"Belgien", gr:"Grade 2"}
     ]
+
 };

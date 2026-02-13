@@ -46,9 +46,9 @@ const db = {
         {n:"Formula Vintage Gen2 Model1",y:"1969",c:"Formula Vintage Gen 2",g:"retro formel"},
         {n:"Formula Vintage Gen2 Model2",y:"1969",c:"Formula Vintage Gen 2",g:"retro formel"},
         {n:"Lotus Type 49C",y:"1970",c:"Formula Vintage Gen 2",g:"retro formel"},
-        {n:"Audi V8 quattro DTM",y:"1992",c:"Group A",g:"retro"},
-        {n:"BMW M3 Sport Evo GrA",y:"1992",c:"Group A",g:"retro"},
-        {n:"Mercedes-Benz 190E EVO 2 DTM",y:"1992",c:"Group A",g:"retro"},
+        {n:"Audi V8 quattro DTM",y:"1992",c:"Group A",g:"retro touren"},
+        {n:"BMW M3 Sport Evo GrA",y:"1992",c:"Group A",g:"retro touren"},
+        {n:"Mercedes-Benz 190E EVO 2 DTM",y:"1992",c:"Group A",g:"retro touren"},
         {n:"Chevrolet GTP",y:"1988",c:"Group C",g:"retro"},
         {n:"Nissan R89C",y:"1989",c:"Group C",g:"retro"},
         {n:"Porsche 962C",y:"1987",c:"Group C",g:"retro"},
@@ -420,4 +420,5 @@ const db = {
     ]
 
 };
+
 

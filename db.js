@@ -208,6 +208,10 @@ const db = {
         {n:"Maserati GT2 Stradale",y:"2024",c:"Supercars",g:"gt"},
         {n:"McLaren F1 LM",y:"1995",c:"Supercars",g:"gt"},
         {n:"Ultima GTR (640)",y:"2000",c:"Supercars",g:"gt"},
+		{n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"gt"},
+		{n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"gt"},
+        {n:"Ginetta G40 (GT5)",y:"2011",c:"GT5",g:"gt"},
+        {n:"Puma P052",y:"2017",c:"GT5",g:"gt"},  
 
         // --- GRUPPE: TOURENWAGEN & NASCAR (g: "touren") ---
         {n:"Aussie Racing Camaro",y:"2019",c:"ARC",g:"touren"},
@@ -242,12 +246,7 @@ const db = {
         {n:"Caterham Academy",y:"2015",c:"Caterham Academy",g:"spezial"},
         {n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"spezial"},
         {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},
-        {n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"spezial"},
-        
-        {n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"spezial"},
-        {n:"Ginetta G40 (GT5)",y:"2011",c:"GT5",g:"spezial"},
-        {n:"Puma P052",y:"2017",c:"GT5",g:"spezial"},
-        {n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"spezial"},
+        {n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"spezial"},               
         {n:"Kartcross",y:"2016",c:"Kartcross",g:"spezial"},
         {n:"Kart 2-Stroke 125cc Direct",y:"2016",c:"Karting 2T 125cc",g:"spezial"},
         {n:"Kart 4-Stroke Race",y:"2016",c:"Karting 4T Race",g:"spezial"},
@@ -421,6 +420,7 @@ const db = {
     ]
 
 };
+
 
 
 

@@ -70,6 +70,7 @@ const db = {
         {n:"Lotus 23",y:"1962",c:"Vintage Touring Cars Tier 2",g:"retro"},
         {n:"MINI Cooper S",y:"1965",c:"Vintage Touring Cars Tier 2",g:"retro"},
 		{n:"Fiat Uno",y:"1995",c:"Copa Uno",g:"retro"},
+		{n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"retro"},
 
         // --- GRUPPE: FORMELSPORT (g: "formel") ---
         {n:"Lola T95/00 Ford-Cosworth",y:"1995",c:"Formula USA Gen 1",g:"formel"},
@@ -249,8 +250,7 @@ const db = {
         {n:"Caterham 620R",y:"2013",c:"Caterham 620R",g:"spezial"},
         {n:"Caterham Academy",y:"2015",c:"Caterham Academy",g:"spezial"},
         {n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"spezial"},
-        {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},
-        {n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"spezial"},               
+        {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},               
         {n:"Kartcross",y:"2016",c:"Kartcross",g:"spezial"},
         {n:"Kart 2-Stroke 125cc Direct",y:"2016",c:"Karting 2T 125cc",g:"spezial"},
         {n:"Kart 4-Stroke Race",y:"2016",c:"Karting 4T Race",g:"spezial"},
@@ -421,6 +421,7 @@ const db = {
     ]
 
 };
+
 
 
 

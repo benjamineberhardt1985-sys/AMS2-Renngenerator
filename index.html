@@ -229,7 +229,7 @@
 
         let html = "";
         for(let i=0; i<3; i++) {
-            let carPool = currentFilter === 'all' ? db.cars : db.cars.filter(c => c.g === currentFilter);
+            let carPool = currentFilter === 'all' ? db.cars : db.cars.filter(c => c.g.includes(currentFilter));
             const car = carPool[Math.floor(Math.random() * carPool.length)];
 
             let trackPool = db.tracks;
@@ -285,4 +285,5 @@
 
 </body>
 </html>
+
 

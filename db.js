@@ -69,6 +69,7 @@ const db = {
         {n:"Lamborghini Miura SV",y:"1971",c:"Vintage Touring Cars Tier 1",g:"retro"},
         {n:"Lotus 23",y:"1962",c:"Vintage Touring Cars Tier 2",g:"retro"},
         {n:"MINI Cooper S",y:"1965",c:"Vintage Touring Cars Tier 2",g:"retro"},
+		{n:"Fiat Uno",y:"1995",c:"Copa Uno",g:"retro"},
 
         // --- GRUPPE: FORMELSPORT (g: "formel") ---
         {n:"Lola T95/00 Ford-Cosworth",y:"1995",c:"Formula USA Gen 1",g:"formel"},
@@ -242,7 +243,7 @@ const db = {
         {n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"spezial"},
         {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},
         {n:"Volkswagen Fusca",y:"2011",c:"Copa Fusca",g:"spezial"},
-        {n:"Fiat Uno",y:"1995",c:"Copa Uno",g:"spezial"},
+        
         {n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"spezial"},
         {n:"Ginetta G40 (GT5)",y:"2011",c:"GT5",g:"spezial"},
         {n:"Puma P052",y:"2017",c:"GT5",g:"spezial"},
@@ -420,5 +421,6 @@ const db = {
     ]
 
 };
+
 
 

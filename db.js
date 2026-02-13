@@ -119,7 +119,6 @@ const db = {
 
         // --- GRUPPE: GT & PROTOTYPEN (g: "gt") ---
         {n:"Cadillac DPi-V.R",y:"2018",c:"DPi",g:"gt"},
-        {n:"Ginetta G55",y:"2011",c:"Ginetta G55 Supercup",g:"gt"},
         {n:"Ginetta G55 GT3",y:"2011",c:"GT Open",g:"gt"},
         {n:"Ultima GTR Race",y:"2006",c:"GT Open",g:"gt"},
         {n:"McLaren F1 GTR",y:"1997",c:"GT1",g:"gt"},
@@ -208,8 +207,7 @@ const db = {
         {n:"Maserati GT2 Stradale",y:"2024",c:"Supercars",g:"gt"},
         {n:"McLaren F1 LM",y:"1995",c:"Supercars",g:"gt"},
         {n:"Ultima GTR (640)",y:"2000",c:"Supercars",g:"gt"},
-		{n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"gt"},
-		{n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"gt"},
+		{n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"gt"},	
         {n:"Ginetta G40 (GT5)",y:"2011",c:"GT5",g:"gt"},
         {n:"Puma P052",y:"2017",c:"GT5",g:"gt"},  
 
@@ -235,6 +233,12 @@ const db = {
         {n:"Chevrolet Cruze Stock Car 2024",y:"2024",c:"Stock Car Pro Series 2024",g:"touren"},
         {n:"Toyota Corolla Stock Car 2024",y:"2024",c:"Stock Car Pro Series 2024",g:"touren"},
         {n:"Super V8 (Gen2 ZB)",y:"2018",c:"Super V8",g:"touren"},
+		{n:"Volkswagen Polo",y:"2021",c:"TSI Cup",g:"touren"},
+        {n:"Volkswagen Polo GTS",y:"2021",c:"TSI Cup",g:"touren"},
+        {n:"Volkswagen Virtus",y:"2021",c:"TSI Cup",g:"touren"},
+        {n:"Volkswagen Virtus GTS",y:"2021",c:"TSI Cup",g:"touren"},
+		{n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"touren"},
+		{n:"Ginetta G55",y:"2011",c:"Ginetta G55 Supercup",g:"touren"},
         // NASCAR (Stock USA) mit Oval-Bevorzugung
         {n:"Stock USA Gen1",y:"1974",c:"Stock USA Gen 1",g:"touren",preferOval:true},
         {n:"Stock USA Gen2",y:"1992",c:"Stock USA Gen 2",g:"touren",preferOval:true},
@@ -254,10 +258,7 @@ const db = {
         {n:"Kart 2-Stroke 125cc Shifter",y:"2016",c:"Karting 2T Shifter",g:"spezial"},
         {n:"Super Kart 250cc",y:"2019",c:"Super Kart",g:"spezial"},
         {n:"Chevrolet Camaro SS",y:"2019",c:"Street Cars",g:"spezial"},
-        {n:"Volkswagen Polo",y:"2021",c:"TSI Cup",g:"spezial"},
-        {n:"Volkswagen Polo GTS",y:"2021",c:"TSI Cup",g:"spezial"},
-        {n:"Volkswagen Virtus",y:"2021",c:"TSI Cup",g:"spezial"},
-        {n:"Volkswagen Virtus GTS",y:"2021",c:"TSI Cup",g:"spezial"},
+       
         // Trucks
         {n:"IVECO Stralis",y:"2017",c:"Copa Truck",g:"spezial"},
         {n:"MAN TGX",y:"2017",c:"Copa Truck",g:"spezial"},
@@ -269,7 +270,7 @@ const db = {
         {n:"Citroen DS3RX",y:"2016",c:"Rallycross",g:"spezial"},
         {n:"Mini Countryman R60 RX",y:"2016",c:"Rallycross",g:"spezial"},
         {n:"Mitsubishi Lancer Evo10 RX",y:"2013",c:"Rallycross",g:"spezial"},
-        {n:"Volkswagen Polo RX",y:"2016",c:"Rallycross",g:"spezial"}
+        {n:"Volkswagen Polo RX",y:"2016",c:"Rallycross",g:"spezial"},
 		{n:"Formula Dirt",y:"2014",c:"Rallycross",g:"spezial"},
     ],
 	
@@ -420,6 +421,7 @@ const db = {
     ]
 
 };
+
 
 
 

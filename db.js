@@ -210,7 +210,8 @@ const db = {
         {n:"Ultima GTR (640)",y:"2000",c:"Supercars",g:"gt"},
 		{n:"BMW M3 E46 GTR",y:"2004",c:"GTR 2004",g:"gt"},	
         {n:"Ginetta G40 (GT5)",y:"2011",c:"GT5",g:"gt"},
-        {n:"Puma P052",y:"2017",c:"GT5",g:"gt"},  
+        {n:"Puma P052",y:"2017",c:"GT5",g:"gt"},
+		{n:"Chevrolet Camaro SS",y:"2019",c:"Street Cars",g:"gt"},
 
         // --- GRUPPE: TOURENWAGEN & NASCAR (g: "touren") ---
         {n:"Aussie Racing Camaro",y:"2019",c:"ARC",g:"touren"},
@@ -240,24 +241,24 @@ const db = {
         {n:"Volkswagen Virtus GTS",y:"2021",c:"TSI Cup",g:"touren"},
 		{n:"Ginetta G40",y:"2010",c:"Ginetta G40 Cup",g:"touren"},
 		{n:"Ginetta G55",y:"2011",c:"Ginetta G55 Supercup",g:"touren"},
+		{n:"Caterham 620R",y:"2013",c:"Caterham 620R",g:"touren"},
+        {n:"Caterham Academy",y:"2015",c:"Caterham Academy",g:"touren"},
+        {n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"touren"},
+        {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"touren"},
+		
         // NASCAR (Stock USA) mit Oval-Bevorzugung
         {n:"Stock USA Gen1",y:"1974",c:"Stock USA Gen 1",g:"touren",preferOval:true},
         {n:"Stock USA Gen2",y:"1992",c:"Stock USA Gen 2",g:"touren",preferOval:true},
         {n:"Stock USA Gen3",y:"2023",c:"Stock USA Gen 3",g:"touren",preferOval:true},
         {n:"Stock USA Gen3 LM",y:"2023",c:"Stock USA Gen 3 LM",g:"touren",preferOval:true},
 
-        // --- GRUPPE: KARTS & TRUCKS (g: "spezial") ---
-        {n:"Caterham 620R",y:"2013",c:"Caterham 620R",g:"spezial"},
-        {n:"Caterham Academy",y:"2015",c:"Caterham Academy",g:"spezial"},
-        {n:"Caterham Superlight",y:"2017",c:"Caterham Superlight",g:"spezial"},
-        {n:"Caterham Supersport",y:"2017",c:"Caterham Supersport",g:"spezial"},               
+        // --- GRUPPE: KARTS & TRUCKS (g: "spezial") ---               
         {n:"Kartcross",y:"2016",c:"Kartcross",g:"spezial"},
         {n:"Kart 2-Stroke 125cc Direct",y:"2016",c:"Karting 2T 125cc",g:"spezial"},
         {n:"Kart 4-Stroke Race",y:"2016",c:"Karting 4T Race",g:"spezial"},
         {n:"Kart 4-Stroke Rental",y:"2016",c:"Karting 4T Rental",g:"spezial"},
         {n:"Kart 2-Stroke 125cc Shifter",y:"2016",c:"Karting 2T Shifter",g:"spezial"},
         {n:"Super Kart 250cc",y:"2019",c:"Super Kart",g:"spezial"},
-        {n:"Chevrolet Camaro SS",y:"2019",c:"Street Cars",g:"spezial"},
        
         // Trucks
         {n:"IVECO Stralis",y:"2017",c:"Copa Truck",g:"spezial"},
@@ -266,6 +267,7 @@ const db = {
         {n:"Vulkan Truck",y:"2017",c:"Copa Truck",g:"spezial"},
         {n:"Volkswagen Constellation",y:"2017",c:"Copa Truck",g:"spezial"},
         {n:"Super Trophy Truck",y:"2022",c:"Super Trophy Trucks",g:"spezial",isSTT:true},
+		
         // Rallycross
         {n:"Citroen DS3RX",y:"2016",c:"Rallycross",g:"spezial"},
         {n:"Mini Countryman R60 RX",y:"2016",c:"Rallycross",g:"spezial"},
@@ -421,6 +423,7 @@ const db = {
     ]
 
 };
+
 
 
 
